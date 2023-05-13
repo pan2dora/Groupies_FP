@@ -1,9 +1,11 @@
 import "./App.css";
 import MyNavBar from "./components/Navbar/Navbar";
-import {Route,Routes,} from "react-router-dom";
+import {Route,Routes,BrowserRouter} from "react-router-dom";
 import Home from "./components/Routes/Home";
 import Profile from "./components/Routes/Profile";
 import About from "./components/Routes/About";
+import Group from "./components/Routes/Groups/Group";
+import GroupList from "./components/Routes/Groups/GroupsList";
 
 
 // const router = createBrowserRouter(
@@ -22,16 +24,21 @@ import About from "./components/Routes/About";
 function App() {
   return (
     <>
-    <div className="w-screen h-screen bg-yellow-50"></div>
-     <MyNavBar/>
-     <Routes>
+    <MyNavBar/>
+   
+   <BrowserRouter>
 
+     <Routes>
+    
     <Route path="/" element = {<Home/>}/>
     <Route path="/profile" element = {<Profile/>}/>
     <Route path="/about" element = {<About/>}/>
-    <Route path="/home" element = {<Home/>}/>
+    <Route path="/group" elemeny = {<Group/>}/>
+    <Route path="/groups" element = {<GroupList/>}/>
+ 
      </Routes>
-    </>
+     </BrowserRouter>
+   </> 
   );
 }
 
