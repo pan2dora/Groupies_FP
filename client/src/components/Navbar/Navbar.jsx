@@ -12,8 +12,8 @@ function MyNavBar(props) {
 
   let [open, setOpen] = useState(false);
   return (
-    //div1: creates navbar shadow div2: creates uniformed spacing and color
-    <div className="shadow-md w-full fixed top-0 left-0">
+    //div1: creates navbar shadow div2: creates uniformed spacing and color w-full
+    <div className="shadow-md  fixed top-0 left-0 sticky">
       <div className="md:flex items-center justify-between bg-white  md:px-10 px-7 ">
         <div>
           <a href="/">
