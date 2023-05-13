@@ -1,15 +1,13 @@
-import Container from "react-bootstrap/Container";
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
+
 import Logo from "/src/assets/Heading.svg";
 import Button from "../Login/Button";
 import { useState } from "react";
 
 function MyNavBar(props) {
   let Links = [
-    { name: "Green", link: "/" },
-    { name: "Yellow", link: "/" },
-    { name: "Blue", link: "/" }
+    { name: "Explore", link: "/groups" },
+    { name: "Create", link: "/" },
+    { name: "About", link: "/about" }
   ];
 
   let [open, setOpen] = useState(false);
