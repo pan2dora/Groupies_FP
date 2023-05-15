@@ -29,6 +29,7 @@ const onRedirectCallback = (appState) => {
 }
 
    return (
+    
         <Auth0Provider
           domain={domain}
           clientId={clientId}
@@ -45,4 +46,4 @@ const onRedirectCallback = (appState) => {
 
 };
 
-export default Auth0ProviderWithNavigate;
+export default Auth0ProviderWithNavigate

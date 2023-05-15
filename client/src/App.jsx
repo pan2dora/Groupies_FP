@@ -6,6 +6,7 @@ import Profile from "./components/Routes/Profile";
 import About from "./components/Routes/About";
 import Group from "./components/Routes/Groups/Group";
 import GroupList from "./components/Routes/Groups/GroupsList";
+import Auth0ProviderWithNavigate from "./components/Auth0/Auth0Provider";
 
 
 // const router = createBrowserRouter(
@@ -27,8 +28,8 @@ function App() {
    <header>
     <MyNavBar/>
    </header>
+
   
-   <BrowserRouter>
 
      <Routes>
     
@@ -39,9 +40,11 @@ function App() {
     <Route path="/groups" element = {<GroupList/>}/>
  
      </Routes>
-     </BrowserRouter>
+   
+    
    </> 
   );
 }
 
 export default App;
+

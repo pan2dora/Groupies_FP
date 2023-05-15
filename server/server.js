@@ -26,6 +26,16 @@ app.get('/user', async (req, res) => {
 });
 
 
+//Group post
+
+app.get('/group/:groupid')
+
+
+
+
+
+
+
 app.listen(PORT, () => {
     console.log(`Hola, Server listening on ${PORT}`);
 });

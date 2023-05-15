@@ -1,13 +1,13 @@
 import { useAuth0 } from "@auth0/auth0-react";
 
 
-export const SignupButton = () => {
+ const SignupButton = () => {
   const { loginWithRedirect } = useAuth0();
   
   const handleSignUp = async () => {
     await loginWithRedirect({
       appState: {
-        returnTo: "/profile",
+        returnTo: "/",
         //later navigate to page to edit profile
     },
     // using and defining this property means that this 
@@ -19,3 +19,5 @@ export const SignupButton = () => {
         });
       };
     }
+
+export default SignupButton;
