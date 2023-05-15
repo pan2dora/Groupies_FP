@@ -1,17 +1,18 @@
+import React from "react";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
  
-export const Auth0ProviderWithNavigate = ({ children }) => {
+const Auth0ProviderWithNavigate = ({ children }) => {
   const navigate = useNavigate();
 
 //this is what exposes the session history
 
-  const domain = process.env.AUTH0_DOMAIN;
-  const clientId = process.env.AUTH0_CLIENT_ID;
+  const domain = import.meta.env.VITE_AUTH0_DOMAIN;
+  const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
 
 //this allows the React SDK to connect with the correct 
 //application (the one we created earlier)
-  const redirectUri = process.env.AUTH0_CALLBACK_URL;
+  const redirectUri = import.meta.env.VITE_AUTH0_CALLBACK_URL;
 
 //this is what will take users back to your react 
 //application after they authenticate
@@ -43,3 +44,5 @@ const onRedirectCallback = (appState) => {
 
 
 };
+
+export default Auth0ProviderWithNavigate;
