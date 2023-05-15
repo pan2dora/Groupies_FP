@@ -3,7 +3,9 @@ import GroupList from "./GroupsList";
 
 const Group = () => {
 
-return(
+
+
+    return(
     <>
     <p>Group page</p>
     <GroupList/>
