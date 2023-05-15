@@ -24,10 +24,4 @@ server/.DS_Store
 DS_Store
 .DS_Store
 .env
-.DS_Store
-client/.env
-node_modules/
-.vscode/
-.vscode
-.node_modules/
-.node_modules
+ .DS_Store
