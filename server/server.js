@@ -28,8 +28,18 @@ app.get('/user', async (req, res) => {
 
 //Group post
 
-app.get('/group/:groupid')
 
+app.get('/group', async (req,res) => {
+
+    try{
+
+        const  {rows: post} = await db.query('SELECT * FROM post ORDER BY post_id DESC ');
+        res.send(post)
+    }
+    catch (e) {
+        return res.status(400).json({ e });
+    }
+});
 
 
 
