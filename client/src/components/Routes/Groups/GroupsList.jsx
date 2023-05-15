@@ -5,11 +5,12 @@ const GroupList = ({posts}) => {
   
 
   return (
-    <div class="max-w-sm rounded overflow-hidden shadow-lg">
-     
+<div >     
       {posts && posts.map((post) => (
-        <div key={post.group_post_id}>
-          <p>{post.content}</p>
+        <div className="card w-96 bg-base-100 shadow-xl" key={post.group_post_id}>
+              <img src={post.image} alt="post image"/>
+          <p className="card-actions justify-end">{post.content}</p>
+          <button className="btn btn-primary">Like</button>
         </div>
       ))}
     </div>
