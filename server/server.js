@@ -60,6 +60,32 @@ app.get('/group/:groupId', async (req,res) => {
 });
 
 
+//Post to group 
+app.post('/group/:groupId/post', async (req, res) => {
+    try {
+        const groupId = req.params.groupId;
+        const userId = req.params.userId;
+        const newPost = {
+            content: req.body.content,
+            image: req.body.image
+        };
+
+        const query = 'INSERT INTO group_post (image, content, user_id, group_table_id) VALUES ($1, $2, $3, $4) RETURNING *';
+        const values = [newPost.image, newPost.content, userId, groupId]; // Assuming you have the authenticated user's ID
+
+        const result = await db.query(query, values);
+
+        const postedGroup = result.rows[0];
+
+        console.log(postedGroup);
+        res.json(postedGroup);
+    } catch (e) {
+        console.log(e);
+        return res.status(400).json({ e });
+    }
+});
+
+
 
 
 
