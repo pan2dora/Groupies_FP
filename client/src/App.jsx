@@ -36,7 +36,7 @@ function App() {
     <Route path="/" element = {<Home/>}/>
     <Route path="/profile" element = {<Profile/>}/>
     <Route path="/about" element = {<About/>}/>
-    <Route path="/group" elemeny = {<Group/>}/>
+    <Route path="/group" element = {<Group/>}/>
     <Route path="/groups" element = {<GroupList/>}/>
  
      </Routes>
