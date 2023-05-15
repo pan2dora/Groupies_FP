@@ -1,9 +1,18 @@
 
 import Logo from "/src/assets/Heading.svg";
-import Button from "../Login/Button";
+
 import { useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import LoginButton from "../Buttons/Login";
+import LogoutButton from "../Buttons/LogoutButton";
+import SignupButton from "../Buttons/SignupButton";
+
 
 function MyNavBar(props) {
+
+  const { isAuthenticated , user } = useAuth0();
+
+
   let Links = [
     { name: "Explore", link: "/groups" },
     { name: "Create", link: "/" },
@@ -24,7 +33,9 @@ function MyNavBar(props) {
               alt="Groupies Logo"
             />
           </a>
+          
         </div>
+        {!user ? null:<div href="/profile"><img src={user.picture}/></div> }  
         {/* <a
           className="font-bold text-2xl cursor-pointer flex items-center underline decoration-transparent transition duration-300 ease-in-out hover:decoration-inherit"
           href="/"
@@ -47,7 +58,17 @@ function MyNavBar(props) {
                   
             </li>
           ))}
-          <Button>Logout</Button> 
+ {!isAuthenticated && (
+        <>
+          <SignupButton />
+          <LoginButton />
+        </>
+      )}
+      {isAuthenticated && (
+        <>
+          <LogoutButton />
+        </>
+      )}
         </ul>
   
       </div>
