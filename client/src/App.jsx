@@ -24,8 +24,10 @@ import GroupList from "./components/Routes/Groups/GroupsList";
 function App() {
   return (
     <>
+   <header>
     <MyNavBar/>
-   
+   </header>
+  
    <BrowserRouter>
 
      <Routes>

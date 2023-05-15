@@ -5,3 +5,5 @@ return(
 )
 
 }
+
+export default Group;

@@ -2,7 +2,7 @@
 const Profile = () => {
 
     return(
-        <p>Profile</p>
+        <p className='align-content: center md:text-center'> Hi this is Profile</p>
     )
     
     }
