@@ -13,6 +13,7 @@ server/node_modules/
 dist
 dist-ssr
 *.local
+ node_modules/
 
 # Editor directories and files
 .vscode/*
@@ -25,8 +26,18 @@ DS_Store
 *.njsproj
 *.sln
 *.sw?
-  ../.DS_Store
-   ./
-   .DS_Store
-   .env
-    .DS_Store
+../.DS_Store
+./
+.DS_Store
+.env
+.DS_Store
+client/.env
+/.env
+ node_modules/
+.vscode/
+.vscode
+.node_modules/
+.vscode
+.node_modules/
+.node_modules
+vscode

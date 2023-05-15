@@ -1,6 +1,6 @@
 
 import Logo from "/src/assets/Heading.svg";
-
+import { Outlet } from "react-router-dom";
 import { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoginButton from "../Buttons/Login";
@@ -35,7 +35,10 @@ function MyNavBar(props) {
           </a>
           
         </div>
-        {!user ? null:<div href="/profile"><img src={user.picture}/></div> }  
+        {!user ? null:
+        <div> 
+          <a href="/profile"><img className = "rounded-full center"  alt="user-image" src={user.picture} /></a>
+          </div> }  
         {/* <a
           className="font-bold text-2xl cursor-pointer flex items-center underline decoration-transparent transition duration-300 ease-in-out hover:decoration-inherit"
           href="/"
@@ -72,7 +75,7 @@ function MyNavBar(props) {
         </ul>
   
       </div>
-      
+      <Outlet/>
     </div>
   );
 }
