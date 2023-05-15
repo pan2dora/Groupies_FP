@@ -3,8 +3,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import './index.css'
-import { BrowserRouter } from 'react-router-dom'
-import MyNavBar from './components/Navbar/Navbar'
+
 
 
 //Function that takes a element that will create my router
@@ -22,8 +21,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
    
     <div className=" h-screen sticky bg-yellow-50">
+    <Auth0Provider>
+      <App />
+
+    </Auth0Provider>
    
-    <App />
 
  </div>
     
