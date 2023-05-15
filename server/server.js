@@ -33,10 +33,28 @@ app.get('/group', async (req,res) => {
 
     try{
 
-        const  {rows: post} = await db.query('SELECT * FROM post ORDER BY post_id DESC ');
+        const  {rows: post} = await db.query('SELECT * FROM group_post ORDER BY group_post_id DESC ');
         res.send(post)
     }
     catch (e) {
+        return res.status(400).json({ e });
+    }
+});
+
+//Get groups data based based on id 
+app.get('/group/:groupId', async (req,res) => {
+
+
+    try{
+
+        const groupId = req.params.groupId;
+        const {rows: post} = await db.query('SELECT * FROM group_table JOIN group_post ON group_table.group_table_id = group_post.group_table_id WHERE group_table.group_table_id = $1',[groupId])
+        //'SELECT group_name FROM group_table INNER JOIN group_post ON group_table.group_table_id = group_post.group_table_id WHERE group_post.group_table_id = $1',[groupId]);
+       console.log(post)
+        res.json(post)
+    }
+    catch (e) {
+        console.log(e);
         return res.status(400).json({ e });
     }
 });
