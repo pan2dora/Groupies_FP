@@ -1,7 +1,7 @@
 import GroupList from "./GroupsList";
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-
+import GroupPostForm from "./GroupPostForm";
 const Group = () => {
     const { groupId } = useParams();
     const [posts, setGroupPosts] = useState([]);
@@ -31,9 +31,14 @@ const Group = () => {
 
     return(
     <>
-   
+    <div >
+   <GroupPostForm/>
+    </div>
+   <div >
+    
     {groupId && <GroupList posts = {posts}/>}
-    </>
+   
+    </div></>
 )
 
 }

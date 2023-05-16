@@ -29,7 +29,7 @@ app.get('/user', async (req, res) => {
 //Group post
 
 
-app.get('/group', async (req,res) => {
+app.get('/allpost', async (req,res) => {
 
     try{
 

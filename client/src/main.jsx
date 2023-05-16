@@ -8,6 +8,7 @@ import { BrowserRouter} from 'react-router-dom'
 
 
 
+
 //Function that takes a element that will create my router
 // const router = createBrowserRouter(
 //   createRoutesFromElements(

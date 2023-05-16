@@ -7,6 +7,8 @@ import About from "./components/Routes/About";
 import Group from "./components/Routes/Groups/Group";
 import GroupList from "./components/Routes/Groups/GroupsList";
 import Auth0ProviderWithNavigate from "./components/Auth0/Auth0Provider";
+import 'semantic-ui-css/semantic.min.css'
+
 
 
 // const router = createBrowserRouter(
@@ -37,7 +39,8 @@ function App() {
     <Route path="/profile" element = {<Profile/>}/>
     <Route path="/about" element = {<About/>}/>
     <Route path="/group" element = {<Group/>}/>
-    <Route path="/groups" element = {<GroupList/>}/>
+    <Route path="/group/:groupId" element = {<Group/>}/>
+  
  
      </Routes>
    
