@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 const GroupList = ({posts}) => {
   
 
+  
+
   return (
 <div >     
       {posts && posts.map((post) => (

@@ -26,17 +26,22 @@ const Group = () => {
       }, []);
     
    console.log(posts, "This is data ")
+
+
+  const onSavePost = (newPost)=>{
+    setGroupPosts((post)=>[...post, newPost])
+  }
     
 
 
     return(
     <>
     <div >
-   <GroupPostForm/>
+   <GroupPostForm groupId = {groupId} onSavePost={onSavePost}/>
     </div>
    <div >
     
-    {groupId && <GroupList posts = {posts}/>}
+    {groupId && <GroupList posts = {posts} onSavePost ={onSavePost}/>}
    
     </div></>
 )
