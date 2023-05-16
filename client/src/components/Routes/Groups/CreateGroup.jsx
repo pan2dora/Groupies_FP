@@ -57,36 +57,40 @@ const CreateGroup = () => {
       open={modalOpen}
       onClose={() => {
         setModalOpen(false);
-        setIsSubmitted(false); // Reset the submission status when closing the modal
+        setIsSubmitted(false); // resets the submission status when closing the modal
       }}
       onOpen={handleModalOpen}
       trigger={<Link> Create</Link>}
     >
-      <Modal.Header>Create Group</Modal.Header>
-      <Modal.Content>
+      <Modal.Header className="text-center" >Create Group</Modal.Header>
+      <Modal.Content >
         {isSubmitted ? (
           <p>Your group has been added!</p>
         ) : (
-          <>
+          < >
             {isAuthenticated ? (
-              <form onSubmit={handleSubmit}>
-                <div>
-                  <label>Group Name</label>
-                  <input
+              <form onSubmit={handleSubmit}
+              className="flex flex-col items-center justify-center "
+              >
+                <div className="flex space x-4" >
+                 
+                  <input 
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     type="text"
                     value={newGroup}
-                    required
+                    required 
                     placeholder="Name your group"
                     onChange={handleNewGroup}
                   />
                 </div>
-                <div>
+                <div >
                   <div className="ui checkbox">
                     <input type="checkbox" tabIndex="0" className="hidden" />
                     <label>I agree to the Terms and Conditions</label>
                   </div>
+               
                 </div>
-                <button type="submit">Submit</button>
+                <button type ="submit">Submit</button>
               </form>
             ) : (
               <p>Please log in to create a group.</p>
