@@ -61,7 +61,7 @@ app.get('/group/:groupId', async (req,res) => {
 
 
 //Post to group 
-app.post('/group/:groupId/post', async (req, res) => {
+app.post('/group/:groupId', async (req, res) => {
     try {
         const groupId = req.params.groupId;
         const userId = req.params.userId;
@@ -84,6 +84,26 @@ app.post('/group/:groupId/post', async (req, res) => {
         return res.status(400).json({ e });
     }
 });
+
+//Create group
+app.post('/group', async (req, res)=>{
+try{
+    const newGroup ={
+        group_name: req.body.group_name,
+    };
+    const result = await db.query('INSERT INTO group_table (group_name) VALUES ($1) RETURNING *',[newGroup.group_name],);
+
+
+console.log(result.rows[0]);
+res.json(result.rows[0]);
+
+} catch (e) {
+console.log(e);
+return res.status(400).json({ e });
+}
+
+
+})
 
 
 
