@@ -1,16 +1,41 @@
-import { Form} from "semantic-ui-react"
-import React from "react";
-
+import { Button, Form, Input} from "semantic-ui-react"
+import React, { useState } from "react";
 
 
 const GroupPostForm = () =>{
 
-//create post form 
-    return(
-  <>
-       <p>Post here</p>
+  const [addPost, setAddPost] = useState()
+//create social media post form 
+   
+const handleAddPost = () =>{
 
-  </>
+
+
+}
+
+
+
+return(
+  <>
+<Form>
+<Input
+type = "text"
+required
+placeholder = "What's on your mind?"
+OnChange = {handleAddPost}
+>
+  
+
+
+
+</Input>
+
+<Button>Post</Button>
+</Form>
+
+
+
+          </>
     )
     }
 
