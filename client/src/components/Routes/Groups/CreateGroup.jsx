@@ -5,6 +5,7 @@ import { useState } from "react";
 const CreateGroup = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [newGroup, setNewGroup] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleNewGroup = (event) => {
     const group_name = event.target.value;
