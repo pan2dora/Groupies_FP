@@ -4,7 +4,7 @@
 
 # Groupies App
 
-Welcome to Groupies, the app inspired by the need for safe spaces and fostering community. We understand the importance of connecting with like-minded individuals and creating a supportive environment where everyone feels valued and heard. Groupies was born out of a desire to bring people together, providing a platform where individuals can find their tribe, share their experiences, and build meaningful relationships. Whether you're seeking a community centered around shared interests, hobbies, or personal growth, Groupies is here to empower you and create a space where you belong. Join us today and discover the power of community connections in a safe and inclusive environment.
+Groupies was born out of a desire to bring people together, providing a platform where individuals can find their tribe, share their experiences, and build meaningful relationships. Whether you're seeking a community centered around shared interests, hobbies, or personal growth, Groupies is here to empower you and create a space where you belong. Join us today and discover the power of community connections in a safe and inclusive environment
 
 ## Features
 
