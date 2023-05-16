@@ -1,13 +1,13 @@
 import "./App.css";
 import MyNavBar from "./components/Navbar/Navbar";
-import {Route,Routes,BrowserRouter} from "react-router-dom";
+import {Route,Routes} from "react-router-dom";
 import Home from "./components/Routes/Home";
 import Profile from "./components/Routes/Profile";
 import About from "./components/Routes/About";
 import Group from "./components/Routes/Groups/Group";
-import GroupList from "./components/Routes/Groups/GroupsList";
-import Auth0ProviderWithNavigate from "./components/Auth0/Auth0Provider";
+import CreateGroup from "./components/Routes/Groups/CreateGroup";
 import 'semantic-ui-css/semantic.min.css'
+
 
 
 
@@ -41,6 +41,8 @@ function App() {
     <Route path="/group" element = {<Group/>}/>
     <Route path="/group/:groupId" element = {<Group/>}/>
   
+    <Route path="/create" element = {<CreateGroup/>}/>
+ 
  
      </Routes>
    

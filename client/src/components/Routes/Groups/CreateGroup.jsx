@@ -3,14 +3,12 @@ import { Modal, Form, Button, Header, FormField } from "semantic-ui-react";
 import { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
-
 const CreateGroup = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [newGroup, setNewGroup] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const { isAuthenticated, loginWithRedirect } = useAuth0();
-
 
   const handleNewGroup = (event) => {
     const group_name = event.target.value;
@@ -48,7 +46,6 @@ const CreateGroup = () => {
       setModalOpen(true);
     } else {
       alert("Must be logged in to create a group");
-  
     }
   };
 
@@ -62,35 +59,34 @@ const CreateGroup = () => {
       onOpen={handleModalOpen}
       trigger={<Link> Create</Link>}
     >
-      <Modal.Header className="text-center" >Create Group</Modal.Header>
-      <Modal.Content >
+      <Modal.Header className="text-center">Create Group</Modal.Header>
+      <Modal.Content>
         {isSubmitted ? (
           <p>Your group has been added!</p>
         ) : (
-          < >
+          <>
             {isAuthenticated ? (
-              <form onSubmit={handleSubmit}
-              className="flex flex-col items-center justify-center "
+              <form
+                onSubmit={handleSubmit}
+                className="flex flex-col items-center justify-center "
               >
-                <div className="flex space x-4" >
-                 
-                  <input 
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                <div className="flex space x-4">
+                  <input
+                    className=" text-md rounded-lg p-2.5 placeholder-orange-600 text-orange "
                     type="text"
                     value={newGroup}
-                    required 
+                    required
                     placeholder="Name your group"
                     onChange={handleNewGroup}
                   />
                 </div>
-                <div >
+                <div>
                   <div className="ui checkbox">
                     <input type="checkbox" tabIndex="0" className="hidden" />
                     <label>I agree to the Terms and Conditions</label>
                   </div>
-               
                 </div>
-                <button type ="submit">Submit</button>
+                <button type="submit">Submit</button>
               </form>
             ) : (
               <p>Please log in to create a group.</p>
@@ -102,7 +98,5 @@ const CreateGroup = () => {
     </Modal>
   );
 };
-
-
 
 export default CreateGroup;
