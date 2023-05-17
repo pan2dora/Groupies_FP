@@ -3,8 +3,12 @@ import { Button, Form, Input } from "semantic-ui-react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const GroupPostForm = ({ onSavePost, groupId }) => {
+ 
   const [newPost, setNewPost] = useState("");
-  const { isAuthenticated } = useAuth0();
+  
+  
+ const { isAuthenticated, user } = useAuth0();
+
   const handleAddPost = (event) => {
     const content = event.target.value;
     setNewPost(content);
@@ -13,6 +17,7 @@ const GroupPostForm = ({ onSavePost, groupId }) => {
   const addNewPost = () => {
     const post = {
       content: newPost,
+      userId: user.sub, //user.sub is the Auth0 id and we include it with the API request so we can register who is posting in groups
     };
 
     fetch(`http://localhost:8080/group/${groupId}`, {
@@ -32,12 +37,13 @@ const GroupPostForm = ({ onSavePost, groupId }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    addNewPost();
+    if(isAuthenticated && groupId){ //if user is logged in and a member of the group they cab post
+    addNewPost();}
   };
 
   return (
     <div>
-      {isAuthenticated ? (
+      {isAuthenticated && groupId ? ( //another authentication check to make sure the user is logged in and a member of the group
         <Form onSubmit={handleSubmit}>
           <Input
             type="text"
@@ -51,7 +57,13 @@ const GroupPostForm = ({ onSavePost, groupId }) => {
           </Button>
         </Form>
       ) : (
-        <p>Please log in to add a post.</p>
+        <div>
+        {!isAuthenticated ? (
+          <p>Please log in to add a post.</p>
+        ) : (
+          <p>You are not a member of this group.</p>
+        )}
+      </div>
       )}
     </div>
   );
