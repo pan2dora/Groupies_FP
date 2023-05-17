@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Button, Form, Input } from "semantic-ui-react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const GroupPostForm = ({ onSavePost, groupId }) => {
   const [newPost, setNewPost] = useState("");
-
+  const { isAuthenticated } = useAuth0();
   const handleAddPost = (event) => {
     const content = event.target.value;
     setNewPost(content);
@@ -36,18 +37,22 @@ const GroupPostForm = ({ onSavePost, groupId }) => {
 
   return (
     <div>
-      <Form onSubmit={handleSubmit}>
-        <Input
-          type="text"
-          value={newPost}
-          required
-          placeholder="What's on your mind?"
-          onChange={handleAddPost}
-        />
-        <Button type="submit" disabled={!groupId}>
-          {groupId ? "Post" : "Not a member"}
-        </Button>
-      </Form>
+      {isAuthenticated ? (
+        <Form onSubmit={handleSubmit}>
+          <Input
+            type="text"
+            value={newPost}
+            required
+            placeholder="What's on your mind?"
+            onChange={handleAddPost}
+          />
+          <Button type="submit" disabled={!groupId}>
+            {groupId ? "Post" : "Not a member"}
+          </Button>
+        </Form>
+      ) : (
+        <p>Please log in to add a post.</p>
+      )}
     </div>
   );
 };
