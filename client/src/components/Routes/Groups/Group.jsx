@@ -2,6 +2,7 @@ import GroupList from "./GroupsList";
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import GroupPostForm from "./GroupPostForm";
+import GroupMembership from "./Membership";
 const Group = () => {
     const { groupId } = useParams();
     const [posts, setGroupPosts] = useState([]);
@@ -36,6 +37,7 @@ const Group = () => {
 
     return(
     <>
+    <div><GroupMembership groupId={groupId}/></div>
     <div >
    <GroupPostForm groupId = {groupId} onSavePost={onSavePost}/>
     </div>
