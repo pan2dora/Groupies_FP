@@ -104,7 +104,7 @@ app.post("/group", async (req, res) => {
 
 //Group membership 
 //Check if user is a member of a group 
-app.get("/group/:groupId/member/:userId", async (req, res) => {
+app.get("/group/:groupId/member", async (req, res) => {
     try {
       const userId = req.params.userId; // Corrected parameter name
       const groupId = req.params.groupId; // Corrected parameter name
@@ -118,8 +118,8 @@ app.get("/group/:groupId/member/:userId", async (req, res) => {
       
       res.json({ isMember });
     } catch (e) {
-      console.log(e);
-      return res.status(400).json({ error: "Error checking membership" }); // Corrected error message key
+        console.error("Error checking membership:", e);
+        return res.status(400).json({ error: "Error checking membership" }) // Corrected error message key
     }
   });
 
