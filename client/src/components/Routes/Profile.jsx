@@ -1,10 +1,27 @@
+import React, { useEffect, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+
+
+
 
 const Profile = () => {
+    const { user, isAuthenticated,} = useAuth0();
+    const [userMetadata, setUserMetadata] = useState(null);
 
-    return(
-        <p className='align-content: center md:text-center'> Hi this is Profile</p>
-    )
-    
-    }
-    
-    export default Profile;
+//fetching metadata from api
+
+
+  
+    return (
+      isAuthenticated && (
+        <div>
+          <img src={user.picture} alt={user.name} />
+          <h2>{user.name}</h2>
+          <p>{user.email}</p>
+        
+        </div>
+      )
+    );
+  };
+  
+  export default Profile;

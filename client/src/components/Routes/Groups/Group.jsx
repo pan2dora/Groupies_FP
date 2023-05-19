@@ -28,13 +28,14 @@ const Group = () => {
   return (
     <>
       <div style={{ marginBottom: "1rem" }}>
-        <GroupMembership groupId={groupId} />
+        <GroupMembership groupId={groupId} /> 
       </div>
       <Grid columns={2} stackable>
         <Grid.Row>
           <Grid.Column width={10}>
             <GroupPostForm groupId={groupId} onSavePost={onSavePost} />
             <GroupList posts={posts} onSavePost={onSavePost} />
+          
           </Grid.Column>
           <Grid.Column width={6}>
             <Card fluid>
