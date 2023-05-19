@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 
-const GroupMembership = ({ groupId }) => {
+const GroupMembership = ({ groupId, onMembershipChange }) => {
   const { isAuthenticated, user } = useAuth0();
   const userId = user?.sub;
 
@@ -32,20 +32,27 @@ const GroupMembership = ({ groupId }) => {
   };
 
   const handleToggleMembership = () => {
-    const updatedMember = !isMember;
+    if (!isMember) {
+      joinGroup();
+    }
+  };
+
+  const joinGroup = () => {
     fetch(`http://localhost:8080/group/${groupId}/user/${userId}`, {
-  method: 'PUT',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({ isMember: updatedMember }),
-})
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
       .then((response) => {
-        
-        setIsMember(updatedMember);
+        if (!response.ok) {
+          throw new Error('Error joining group');
+        }
+        setIsMember(true);
+        onMembershipChange(true); // Invoke the callback function to update the membership status
       })
       .catch((error) => {
-    
+        console.error('Error joining group:', error);
         setError(error.message);
       });
   };
@@ -54,9 +61,13 @@ const GroupMembership = ({ groupId }) => {
     <div>
       {error && <div>Error: {error}</div>}
       {isAuthenticated && userId && (
-        <button onClick={handleToggleMembership}>
-          {isMember ? 'Unjoin' : 'Join'}
-        </button>
+        <>
+          {isMember ? (
+            <div>You are a member</div>
+          ) : (
+            <button onClick={handleToggleMembership}>Join</button>
+          )}
+        </>
       )}
       {!isAuthenticated && <div>Please log in to join the group</div>}
     </div>
@@ -64,3 +75,4 @@ const GroupMembership = ({ groupId }) => {
 };
 
 export default GroupMembership;
+
