@@ -104,24 +104,38 @@ app.post("/group", async (req, res) => {
 
 //Group membership 
 //Check if user is a member of a group 
-app.get("/group/:groupId/member", async (req, res) => {
+app.get('/group/:groupId/:userId', async (req, res) => {
     try {
-      const userId = req.params.userId; // Corrected parameter name
-      const groupId = req.params.groupId; // Corrected parameter name
+      const userId = req.params.userId;
+      const groupId = req.params.groupId;
   
-      const { rows } = await db.query(
-        "SELECT * FROM group_membership WHERE uid = $1 AND gtid = $2",
-        [userId, groupId]
-      );
+      const query = 'SELECT is_member FROM group_membership WHERE uid = $1 AND gtid = $2';
+      const values = [userId, groupId];
   
-      const isMember = rows.length > 0; //determines true or false
-      
-      res.json({ isMember });
-    } catch (e) {
-        console.error("Error checking membership:", e);
-        return res.status(400).json({ error: "Error checking membership" }) // Corrected error message key
+      const result = await db.query(query, values);
+      if (result.rows.length > 0) {
+        res.json({ isMember: result.rows[0].is_member }); //Return true or false if user is a member of the group
+      } else {
+        res.json({ isMember: false });
+      }
+    } catch (error) {
+      console.error('Error checking membership:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   });
+
+  //Updaye group membership
+ 
+
+    
+    
+
+
+}catch(e){
+    console.log(e);
+    return res.status(400).json({e})
+}
+  })
 
 
 
