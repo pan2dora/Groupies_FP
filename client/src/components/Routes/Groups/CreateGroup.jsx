@@ -8,8 +8,9 @@ const CreateGroup = () => {
   const [newGroup, setNewGroup] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
+  const { isAuthenticated } = useAuth0();
 
+  // Create new Group
   const handleNewGroup = (event) => {
     const group_name = event.target.value;
     setNewGroup(group_name);
@@ -58,6 +59,7 @@ const CreateGroup = () => {
       }}
       onOpen={handleModalOpen}
       trigger={<Link> Create</Link>}
+      size="small"
     >
       <Modal.Header className="text-center">Create Group</Modal.Header>
       <Modal.Content>
@@ -66,35 +68,29 @@ const CreateGroup = () => {
         ) : (
           <>
             {isAuthenticated ? (
-              <form
-                onSubmit={handleSubmit}
-                className="flex flex-col items-center justify-center "
-              >
-                <div className="flex space x-4">
-                  <input
-                    className=" text-md rounded-lg p-2.5 placeholder-orange-600 text-orange "
-                    type="text"
-                    value={newGroup}
-                    required
-                    placeholder="Name your group"
-                    onChange={handleNewGroup}
+              <Form onSubmit={handleSubmit}>
+                <Form.Input
+                  type="text"
+                  value={newGroup}
+                  required
+                  placeholder="Name your group"
+                  onChange={handleNewGroup}
+                />
+                <Form.Field>
+                  <Form.Checkbox
+                    label="I agree to the Terms and Conditions"
                   />
-                </div>
-                <div>
-                  <div className="ui checkbox">
-                    <input type="checkbox" tabIndex="0" className="hidden" />
-                    <label>I agree to the Terms and Conditions</label>
-                  </div>
-                </div>
-                <button type="submit">Submit</button>
-              </form>
+                </Form.Field>
+                <Button type="submit" primary>
+                  Submit
+                </Button>
+              </Form>
             ) : (
               <p>Please log in to create a group.</p>
             )}
           </>
         )}
       </Modal.Content>
-      <Modal.Actions></Modal.Actions>
     </Modal>
   );
 };
