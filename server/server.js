@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
 });
 
 
-/******************** Group Feature Routes **********************/
+/******************** User Feature Routes **********************/
 
 
 
@@ -39,16 +39,16 @@ app.get("/user", async (req, res) => {
 
 
 //add a new user
-app.post('/user', async (req, res) => {
+app.post('/newuser', async (req, res) => {
   try {
     const { email, given_name, picture } = req.body;
 
     // Generate a unique user ID, you can use a UUID library or any other method
-    const userId = generateUniqueUserId();
+   
 
     const result = await db.query(
-      'INSERT INTO user_table (user_id, email, given_name, picture) VALUES ($1, $2, $3, $4) RETURNING *',
-      [userId, email, given_name, picture]
+      'INSERT INTO user_table (email, given_name, picture) VALUES ($1, $2, $3) RETURNING *',
+      [email, given_name, picture]
     );
 
     const user = result.rows[0];
