@@ -19,44 +19,53 @@ app.get("/", (req, res) => {
   res.json({ message: "Hola, from My template ExpressJS with React-Vite" });
 });
 
-//add a new user
-app.post('/user', async (req, res) => {
+
+/******************** Group Feature Routes **********************/
+
+
+
+
+app.get("/user", async (req, res) => {
   try {
-      const { email,family_name,picture } = req.body;
-      console.log("request body", req.body);
-      const result = await db.query(
-          'INSERT INTO user_table (email, family_name, picture) VALUES($1, $2, $3 ) ON CONFLICT DO NOTHING RETURNING *',
-          [email, family_name, picture],
-      );
-      console.log(result.rows[0]);
-      // res.json(result.rows[0] ?? {});
-
-      const { rows: user  } = await db.query('SELECT * FROM ready_users WHERE user_email=$1', [email]);
-      res.send(user);
-
+    const { rows: users } = await db.query(
+      "SELECT * FROM user_table ORDER BY user_id ASC"
+    );
+    res.send(users);
   } catch (e) {
-      console.log(e);
-      return res.status(400).json({ e });
+    return res.status(400).json({ e });
   }
-
 });
 
 
 
+//add a new user
+app.post('/user', async (req, res) => {
+  try {
+    const { email, given_name, picture } = req.body;
 
-// app.get("/user", async (req, res) => {
-//   try {
-//     const { rows: users } = await db.query(
-//       "SELECT * FROM user_table ORDER BY user_id ASC"
-//     );
-//     res.send(users);
-//   } catch (e) {
-//     return res.status(400).json({ e });
-//   }
-// });
+    // Generate a unique user ID, you can use a UUID library or any other method
+    const userId = generateUniqueUserId();
+
+    const result = await db.query(
+      'INSERT INTO user_table (user_id, email, given_name, picture) VALUES ($1, $2, $3, $4) RETURNING *',
+      [userId, email, given_name, picture]
+    );
+
+    const user = result.rows[0];
+    res.json(user);
+  } catch (e) {
+    console.log(e);
+    return res.status(400).json({ e });
+  }
+})
+
+
+
+
+
 
 /******************** Group Feature Routes **********************/
-//Create Groups
+
 app.post('/group', async (req, res)=>{
   try{
       const newGroup ={
@@ -65,7 +74,7 @@ app.post('/group', async (req, res)=>{
       const result = await db.query('INSERT INTO group_table (group_name) VALUES ($1) RETURNING *',[newGroup.group_name],);
   
   
-  console.log(result.rows[0]);
+  //console.log(result.rows[0]);
   res.json(result.rows[0]);
   
   } catch (e) {
@@ -129,6 +138,65 @@ app.post("/group/:groupId", async (req, res) => {
 
     console.log(postedGroup);
     res.json(postedGroup);
+  } catch (e) {
+    console.log(e);
+    return res.status(400).json({ e });
+  }
+});
+
+
+
+//Create and Delete Memberships
+//Check membership 
+app.get("/membership/:groupId/:userId", async (req, res) => {
+  try {
+    const { groupId, userId } = req.params;
+
+    const result = await db.query(
+      "SELECT EXISTS(SELECT 1 FROM membership WHERE gtid = $1 AND uid = $2)",
+      [groupId, userId]
+    );
+
+    const isMember = result.rows[0].exists;
+    res.json({ isMember });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+
+// Create Membership
+app.post("/membership", async (req, res) => {
+  try {
+    const { groupId, userId } = req.body;
+
+    const result = await db.query(
+      "INSERT INTO membership (gtid, uid) VALUES ($1, $2) RETURNING *",
+      [groupId, userId]
+    );
+
+    //console.log(result.rows[0]);
+    res.json(result.rows[0]);
+  } catch (e) {
+    console.log(e);
+    return res.status(400).json({ e });
+  }
+});
+
+// Delete Membership
+app.delete("/membership", async (req, res) => {
+  try {
+    const { groupId, userId } = req.body;
+
+    const result = await db.query(
+      "DELETE FROM membership WHERE gtid = $1 AND uid = $2 RETURNING *",
+      [groupId, userId]
+    );
+
+    console.log(result.rows[0]);
+    res.json(result.rows[0]);
   } catch (e) {
     console.log(e);
     return res.status(400).json({ e });

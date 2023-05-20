@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { useEffect } from "react";
 
-const addUser = (newUser, setUser) => {
+const addUser = async (newUser, setUser) => {
   const { email, family_name, picture } = newUser;
 
   const userObj = {
@@ -11,23 +11,24 @@ const addUser = (newUser, setUser) => {
   };
 
   try {
-    fetch("http://localhost:8080/user", {
+    const response = await fetch("http://localhost:8080/user", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(userObj),
-    })
-      .then((response) => {
-        console.log("Response from post method ", response);
-        return response.json();
-      })
-      .then((user) => {
-        setUser(user);
-      });
+    });
+
+    if (response.ok) {
+      const user = await response.json();
+      setUser(user);
+      console.log(user);
+    } else {
+      console.error("Error adding user:", response.status);
+    }
   } catch (error) {
-    console.error(error.message);
+    console.error("Error adding user:", error.message);
   }
 };
 
@@ -49,7 +50,7 @@ const LoginButton = () => {
     }
   }, [newUser, setUser]);
 
-  console.log(newUser);
+ // console.log(newUser);
 
   return (
     <button
