@@ -5,6 +5,8 @@ const http = require('http');
 const path = require("path");
 const db = require("./db/db-connection.js");
 const { auth } = require("express-oauth2-jwt-bearer");
+const bcrypt = require('bcrypt');
+
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -39,28 +41,31 @@ app.get("/user", async (req, res) => {
 
 
 //add a new user
+// Create a new user
 app.post('/newuser', async (req, res) => {
   try {
     const { email, given_name, picture } = req.body;
 
-    // Generate a unique user ID, you can use a UUID library or any other method
-   
+    console.log('Received user data:', { email, given_name, picture });
 
-    const result = await db.query(
-      'INSERT INTO user_table (email, given_name, picture) VALUES ($1, $2, $3) RETURNING *',
-      [email, given_name, picture]
-    );
+    try {
+      const result = await db.query(
+        'INSERT INTO user_table (email, given_name, picture) VALUES ($1, $2, $3) RETURNING *',
+        [email, given_name, picture]
+      );
 
-    const user = result.rows[0];
-    res.json(user);
+      const user = result.rows[0];
+      console.log('Inserted user:', user);
+      res.json(user);
+    } catch (e) {
+      console.log(e);
+      return res.status(400).json({ error: 'Error adding user' });
+    }
   } catch (e) {
     console.log(e);
-    return res.status(400).json({ e });
+    return res.status(400).json({ error: 'Invalid request' });
   }
-})
-
-
-
+});
 
 
 
