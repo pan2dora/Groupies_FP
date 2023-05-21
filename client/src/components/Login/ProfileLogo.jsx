@@ -1,63 +1,90 @@
-
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 
 const ProfileLogo = () => {
-    const {user,isAuthenticated} = useAuth0();
+  const { user, isAuthenticated } = useAuth0();
+  const navigate = useNavigate();
 
-    const addUser = async (userData) => {
+  const addUser = async (userData) => {
+    try {
+      const response = await fetch("http://localhost:8080/newuser", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (response.ok) {
+        const newUser = await response.json();
+        console.log("User added:", newUser);
+        return newUser;
+      } else {
+        throw new Error("Error adding user: " + response.status);
+      }
+    } catch (error) {
+      console.error("Error adding user:", error.message);
+      throw error;
+    }
+  };
+
+  const checkUserExists = async (sub) => {
+    try {
+      const response = await fetch("http://localhost:8080/checkuser", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ sub }),
+      });
+
+      if (response.ok) {
+        const userExists = await response.json();
+        return userExists;
+      } else {
+        throw new Error("Error checking user: " + response.status);
+      }
+    } catch (error) {
+      console.error("Error checking user:", error.message);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    console.log({ isAuthenticated, user });
+    const handleUserLogin = async () => {
+      if (isAuthenticated && user) {
+        const { email, given_name, picture, sub } = user;
+        console.log("User login data:", { email, given_name, picture, sub });
+
         try {
-          const response = await fetch("http://localhost:8080/newuser", {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(userData),
-          });
-    
-          if (response.ok) {
-            const newUser = await response.json();
-            console.log("User added:", newUser);
-            return newUser;
+          const userExists = await checkUserExists(sub);
+
+          if (userExists) {
+            console.log("User already exists:", user);
+            // Do something with existing user if needed
           } else {
-            throw new Error("Error adding user: " + response.status);
+            await addUser({ email, given_name, picture, sub });
+            console.log("User added:", user);
+
+            // Navigate to the signup page after adding the user
+            navigate("/signup"); // Replace "/signup" with the desired signup page path
           }
         } catch (error) {
-          console.error("Error adding user:", error.message);
-          throw error;
+          console.error("Error checking user:", error.message);
         }
-      };
+      }
+    };
 
-      //Checks if user is authenticated and if user is logged in, if so, user is added to database
+    handleUserLogin();
+  }, [isAuthenticated, user, navigate]);
 
-      useEffect(() => {
-        console.log({isAuthenticated,user})
-        const handleUserLogin = async () => {
-          if (isAuthenticated && user) {
-           
-            const { email, given_name, picture, sub} = user;
-            console.log('User login data:', { email, given_name, picture, sub });
-           
-            try {
-              // Call the addUser function to save the new user's information
-              await addUser({ email, given_name, picture, sub });
-              console.log('User added:', user);
-            } catch (error) {
-              console.error("Error adding user:", error.message);
-            } 
-          }
-        };
-    
-        handleUserLogin();
-      }, [isAuthenticated, user]);
-
-
-   
-return (
+  return (
     <>
-    {!user ? null : (
+      {!user ? null : (
         <div>
           <a href="/profile">
             <img
@@ -68,8 +95,8 @@ return (
           </a>
         </div>
       )}
- 
-
-</>)}
+    </>
+  );
+};
 
 export default ProfileLogo;
