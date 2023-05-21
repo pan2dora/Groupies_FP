@@ -1,12 +1,11 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-const http = require('http');
+const http = require("http");
 const path = require("path");
 const db = require("./db/db-connection.js");
 const { auth } = require("express-oauth2-jwt-bearer");
-const bcrypt = require('bcrypt');
-
+const bcrypt = require("bcrypt");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -15,81 +14,104 @@ app.use(cors());
 app.use(express.json());
 
 const token = process.env.ACCESS_TOKEN;
-console.log(token)
+console.log(token);
+
+//utility function that grabs user id for sub from auth0
+const getUserId = async (sub)=>{
+  try{
+    const result = await db.query(
+    "SELECT user_id FROM user_table WHERE auth0 = $1",[sub]
+  );
+  return result.rows[0].user_id
+}catch(e){
+  console.log(e)
+  return 
+}
+
+}
+
+
 
 app.get("/", (req, res) => {
   res.json({ message: "Hola, from My template ExpressJS with React-Vite" });
 });
 
-
 /******************** User Feature Routes **********************/
+//create for individual user later and for logged in user to see their profile
+// app.get("/user", async (req, res) => {
+//   try {
+//     const { rows: users } = await db.query(
+//       "SELECT * FROM user_table ORDER BY user_id ASC "
+//     );
+//     res.send(users);
+//   } catch (e) {
+//     return res.status(400).json({ e });
+//   }
+// });
 
 
 
 
-app.get("/user", async (req, res) => {
-  try {
-    const { rows: users } = await db.query(
-      "SELECT * FROM user_table ORDER BY user_id ASC"
-    );
-    res.send(users);
-  } catch (e) {
-    return res.status(400).json({ e });
-  }
-});
 
 
 
 //add a new user
 // Create a new user
-app.post('/newuser', async (req, res) => {
+app.post("/newuser", async (req, res) => {
   try {
-    const { email, given_name, picture } = req.body;
+    const { email, given_name, picture, sub } = req.body;
 
-    console.log('Received user data:', { email, given_name, picture });
+    console.log("Received user data:", { email, given_name, picture, sub });
 
     try {
-      const result = await db.query(
-        'INSERT INTO user_table (email, given_name, picture) VALUES ($1, $2, $3) RETURNING *',
-        [email, given_name, picture]
-      );
 
+      const existinguser = await db.query(
+        "SELECT * FROM user_table WHERE auth0_sub = $1",
+        [sub]
+      )
+      console.log("Existing users:", existinguser)
+      console.log("Existing users rows:", existinguser.rows)
+      if(existinguser.rowCount >0){ 
+        res.json(existinguser.rows[0])
+        return 
+      }
+      const result = await db.query(
+        "INSERT INTO user_table (email, given_name, picture, auth0_sub) VALUES ($1, $2, $3,$4)  RETURNING *",
+        [email, given_name, picture, sub]
+      );
+     console.log(result)
       const user = result.rows[0];
-      console.log('Inserted user:', user);
+      console.log("Inserted user:", user);
       res.json(user);
     } catch (e) {
       console.log(e);
-      return res.status(400).json({ error: 'Error adding user' });
+      return res.status(422).json({ error: "Error adding user" });
     }
   } catch (e) {
     console.log(e);
-    return res.status(400).json({ error: 'Invalid request' });
+    return res.status(421).json({ error: "Invalid request" });
   }
 });
 
-
-
 /******************** Group Feature Routes **********************/
 
-app.post('/group', async (req, res)=>{
-  try{
-      const newGroup ={
-          group_name: req.body.group_name,
-      };
-      const result = await db.query('INSERT INTO group_table (group_name) VALUES ($1) RETURNING *',[newGroup.group_name],);
-  
-  
-  //console.log(result.rows[0]);
-  res.json(result.rows[0]);
-  
-  } catch (e) {
-  console.log(e);
-  return res.status(400).json({ e });
-  }
-  
-  
-  })
+app.post("/group", async (req, res) => {
+  try {
+    const newGroup = {
+      group_name: req.body.group_name,
+    };
+    const result = await db.query(
+      "INSERT INTO group_table (group_name) VALUES ($1) RETURNING *",
+      [newGroup.group_name]
+    );
 
+    //console.log(result.rows[0]);
+    res.json(result.rows[0]);
+  } catch (e) {
+    console.log(e);
+    return res.status(400).json({ e });
+  }
+});
 
 // Group post
 
@@ -103,9 +125,6 @@ app.get("/allpost", async (req, res) => {
     return res.status(400).json({ e });
   }
 });
-
-
-
 
 // Get groups data based on id
 app.get("/group/:groupId", async (req, res) => {
@@ -149,10 +168,8 @@ app.post("/group/:groupId", async (req, res) => {
   }
 });
 
-
-
 //Create and Delete Memberships
-//Check membership 
+//Check membership
 app.get("/membership/:groupId/:userId", async (req, res) => {
   try {
     const { groupId, userId } = req.params;
@@ -169,8 +186,6 @@ app.get("/membership/:groupId/:userId", async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 });
-
-
 
 // Create Membership
 app.post("/membership", async (req, res) => {
@@ -207,8 +222,6 @@ app.delete("/membership", async (req, res) => {
     return res.status(400).json({ e });
   }
 });
-
-
 
 app.listen(PORT, () => {
   console.log(`Hola, Server listening on ${PORT}`);
