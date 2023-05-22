@@ -14,49 +14,43 @@ app.use(cors());
 app.use(express.json());
 
 const token = process.env.ACCESS_TOKEN;
-console.log(token);
-
-//utility function that grabs user id for sub from auth0
-const getUserId = async (sub)=>{
-  try{
-    const result = await db.query(
-    "SELECT user_id FROM user_table WHERE auth0 = $1",[sub]
-  );
-  return result.rows[0].user_id
-}catch(e){
-  console.log(e)
-  return 
-}
-
-}
-
+//console.log(token);
 
 
 app.get("/", (req, res) => {
   res.json({ message: "Hola, from My template ExpressJS with React-Vite" });
 });
 
+
+
 /******************** User Feature Routes **********************/
-//create for individual user later and for logged in user to see their profile
-// app.get("/user", async (req, res) => {
-//   try {
-//     const { rows: users } = await db.query(
-//       "SELECT * FROM user_table ORDER BY user_id ASC "
-//     );
-//     res.send(users);
-//   } catch (e) {
-//     return res.status(400).json({ e });
-//   }
-// });
+// Utility function to check if a user already exists
+const checkUserExists = async (sub) => {
+  try {
+    const result = await db.query(
+      "SELECT * FROM user_table WHERE auth0_sub = $1",
+      [sub]
+    );
+    return result.rowCount > 0;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+//Check if user exist for sign up 
+app.post("/checkuser", async (req, res) => {
+  try {
+    const { sub } = req.body;
+    const userExists = await checkUserExists(sub);
+    res.json(userExists);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 
-
-
-
-
-
-//add a new user
-// Create a new user
+//Create new user
 app.post("/newuser", async (req, res) => {
   try {
     const { email, given_name, picture, sub } = req.body;
@@ -64,34 +58,104 @@ app.post("/newuser", async (req, res) => {
     console.log("Received user data:", { email, given_name, picture, sub });
 
     try {
+      const userExists = await checkUserExists(sub);
 
-      const existinguser = await db.query(
-        "SELECT * FROM user_table WHERE auth0_sub = $1",
-        [sub]
-      )
-      console.log("Existing users:", existinguser)
-      console.log("Existing users rows:", existinguser.rows)
-      if(existinguser.rowCount >0){ 
-        res.json(existinguser.rows[0])
-        return 
+      if (userExists) {
+        // User already exists, return existing user data
+        const existingUser = await db.query(
+          "SELECT * FROM user_table WHERE auth0_sub = $1",
+          [sub]
+        );
+        console.log("User already exists:", existingUser.rows[0]);
+
+        res.json(existingUser.rows[0]);
+        return;
       }
+
+      // Insert the new user into the user_table
       const result = await db.query(
-        "INSERT INTO user_table (email, given_name, picture, auth0_sub) VALUES ($1, $2, $3,$4)  RETURNING *",
+        "INSERT INTO user_table (email, given_name, picture, auth0_sub) VALUES ($1, $2, $3, $4) RETURNING *",
         [email, given_name, picture, sub]
       );
-     console.log(result)
-      const user = result.rows[0];
-      console.log("Inserted user:", user);
-      res.json(user);
-    } catch (e) {
-      console.log(e);
+
+      const newUser = result.rows[0];
+      console.log("User Added:", newUser);
+      res.json(newUser);
+    } catch (error) {
+      console.log(error);
       return res.status(422).json({ error: "Error adding user" });
     }
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.log(error);
     return res.status(421).json({ error: "Invalid request" });
   }
 });
+
+
+//Signup/Update user profile
+// Validation middleware
+const validateDateOfBirth = (req, res, next) => {
+  const { date_of_birth } = req.body;
+
+  // Validate the date format
+  if (!isValidDateFormat(date_of_birth)) {
+    return res.status(400).json({ error: "Invalid date format for date_of_birth" });
+  }
+
+  next();
+};
+
+// Helper function to validate date format
+function isValidDateFormat(date) {
+  const regex = /^\d{4}-\d{2}-\d{2}$/;
+  return regex.test(date);
+}
+
+// Update user route
+// Update user route
+// Update user route
+// Add middleware to parse request body
+app.use(express.json());
+
+// Update user route
+app.put("/users/:sub", async (req, res) => {
+  try {
+    const sub = req.params.sub;
+    const { displayName, pronouns, dateOfBirth, picture } = req.body;
+
+    console.log("Received request body:", req.body);
+
+    const userExists = await checkUserExists(sub);
+
+    if (!userExists) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    console.log("Updating user data:", {
+      displayName,
+      pronouns,
+      dateOfBirth,
+      picture,
+      sub,
+    });
+
+    const result = await db.query(
+      "UPDATE user_table SET displayname = $1, pronouns = $2, date_of_birth = $3, picture = $4 WHERE auth0_sub = $5 RETURNING *",
+      [displayName, pronouns, dateOfBirth, picture, sub]
+    );
+
+    console.log("User data updated successfully", result.rows[0]);
+
+    res.json({ message: "User data updated successfully", user: result.rows[0] });
+  } catch (error) {
+    console.error("Error updating user data:", error);
+    res.status(500).json({ error: "Error updating user data" });
+  }
+});
+
+
+
+
 
 /******************** Group Feature Routes **********************/
 
