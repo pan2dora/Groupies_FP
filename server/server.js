@@ -92,30 +92,6 @@ app.post("/newuser", async (req, res) => {
 });
 
 
-//Signup/Update user profile
-// Validation middleware
-const validateDateOfBirth = (req, res, next) => {
-  const { date_of_birth } = req.body;
-
-  // Validate the date format
-  if (!isValidDateFormat(date_of_birth)) {
-    return res.status(400).json({ error: "Invalid date format for date_of_birth" });
-  }
-
-  next();
-};
-
-// Helper function to validate date format
-function isValidDateFormat(date) {
-  const regex = /^\d{4}-\d{2}-\d{2}$/;
-  return regex.test(date);
-}
-
-// Update user route
-// Update user route
-// Update user route
-// Add middleware to parse request body
-app.use(express.json());
 
 // Update user route
 app.put("/users/:sub", async (req, res) => {
