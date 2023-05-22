@@ -38,6 +38,7 @@ const UserSignup = () => {
     e.preventDefault();
 
     if (!isAuthenticated) {
+        //is this user logged in 
       // Handle the case where the user is not authenticated
       console.log("User is not authenticated");
       return;
@@ -46,7 +47,7 @@ const UserSignup = () => {
     const sub = user.sub;
 //handles the post request to server to add user data to database if the request is successful 
     try {
-      const response = await fetch(`/users/${sub}`, {
+      const response = await fetch(`http://localhost:8080/users/${sub}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
