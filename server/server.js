@@ -98,7 +98,7 @@ app.put("/users/:sub", async (req, res) => {
   try {
     const sub = req.params.sub;
     const { displayName, pronouns, dateOfBirth, picture } = req.body;
-
+    
     console.log("Received request body:", req.body);
 
     const userExists = await checkUserExists(sub);
@@ -134,7 +134,7 @@ app.put("/users/:sub", async (req, res) => {
 
 
 /******************** Group Feature Routes **********************/
-
+//Create group
 app.post("/group", async (req, res) => {
   try {
     const newGroup = {
@@ -144,14 +144,31 @@ app.post("/group", async (req, res) => {
       "INSERT INTO group_table (group_name) VALUES ($1) RETURNING *",
       [newGroup.group_name]
     );
+//intialized user id 
+   const userId = req.params.userId
+    
+    const groupId = result.rows[0].group_table_id;
+     // Assuming you have the user_id available in the req.user object
+  
+    const membership = {
+      gtid: groupId,
+      uid: userId,
+      is_member: true,
+      is_admin: true,
+    };
 
-    //console.log(result.rows[0]);
-    res.json(result.rows[0]);
-  } catch (e) {
-    console.log(e);
-    return res.status(400).json({ e });
+    await db.query(
+      "INSERT INTO group_membership (gtid, uid, is_member, is_admin) VALUES ($1, $2, $3, $4)",
+      [membership.gtid, membership.uid, membership.is_member, membership.is_admin]
+    );
+
+    res.status(200).json({ message: "Group created successfully" });
+  } catch (error) {
+    console.error("Error creating group:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 // Group post
 
