@@ -25,18 +25,44 @@ app.get("/", (req, res) => {
 
 /******************** User Feature Routes **********************/
 // Utility function to check if a user already exists
-const checkUserExists = async (sub) => {
+
+const getUser = async (sub) => {
   try {
     const result = await db.query(
       "SELECT * FROM user_table WHERE auth0_sub = $1",
       [sub]
     );
-    return result.rowCount > 0;
+    if (result.rowCount === 1){
+      return result.rows[0]
+    }else{
+      return null;
+    }
+  
   } catch (error) {
     console.log(error);
     throw error;
   }
+}
+
+//Maked sure 
+const checkUserExists = async (sub) => {
+    return await getUser(sub)!== null; 
+ 
 };
+// Create a function called get user, create query and a function 
+//This grabs user id
+
+const getUserId = async (sub) =>{
+
+    const user = await getUser(sub)
+    if (user !== null){
+      return user.user_id;
+    }else{
+      return null;
+    }
+}
+
+
 //Check if user exist for sign up 
 app.post("/checkuser", async (req, res) => {
   try {
@@ -145,21 +171,20 @@ app.post("/group", async (req, res) => {
       [newGroup.group_name]
     );
 //intialized user id 
-   const userId = req.params.userId
-    
+   const userId = await getUserId(req.body.sub)
+    console.log("User id:", userId, typeof userId)
     const groupId = result.rows[0].group_table_id;
      // Assuming you have the user_id available in the req.user object
   
     const membership = {
       gtid: groupId,
       uid: userId,
-      is_member: true,
       is_admin: true,
     };
 
     await db.query(
-      "INSERT INTO group_membership (gtid, uid, is_member, is_admin) VALUES ($1, $2, $3, $4)",
-      [membership.gtid, membership.uid, membership.is_member, membership.is_admin]
+      "INSERT INTO group_membership (gtid, uid, is_admin) VALUES ($1, $2, $3)",
+      [membership.gtid, membership.uid, membership.is_admin]
     );
 
     res.status(200).json({ message: "Group created successfully" });
@@ -227,58 +252,74 @@ app.post("/group/:groupId", async (req, res) => {
 
 //Create and Delete Memberships
 //Check membership
-app.get("/membership/:groupId/:userId", async (req, res) => {
+app.get("/membership/:groupId/:sub", async (req, res) => {
   try {
-    const { groupId, userId } = req.params;
+    const { groupId } = req.params;
 
+    const userId = await getUserId(req.params.sub)
+    console.log("sub from membership:", req.params.sub)
+    console.log("req params fro  membership:", req.params)
+console.log("userId from membership:",userId)
+console.log("groupId from membership:",groupId)
     const result = await db.query(
-      "SELECT EXISTS(SELECT 1 FROM membership WHERE gtid = $1 AND uid = $2)",
+      "SELECT * FROM group_membership WHERE gtid = $1 AND uid = $2",
       [groupId, userId]
     );
 
-    const isMember = result.rows[0].exists;
+console.log("Membership result:", result)
+    const isMember = result.rowCount> 0;
     res.json({ isMember });
-  } catch (e) {
-    console.error(e);
-    return res.status(500).json({ error: "Internal server error" });
+    console.log("Membership status:", isMember)
+  } catch (error) {
+    console.error("Error checking membership status:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
-// Create Membership
-app.post("/membership", async (req, res) => {
+
+
+
+/******************** Membership Feature Routes **********************/
+
+// Join Group
+app.post("/group/:groupId/join", async (req, res) => {
   try {
-    const { groupId, userId } = req.body;
+    const { groupId } = req.params;
+    const userId = await getUserId(req.body.sub)// Make sure userId is included in the request body
+
+    console.log("userId:", userId);
 
     const result = await db.query(
-      "INSERT INTO membership (gtid, uid) VALUES ($1, $2) RETURNING *",
+      "INSERT INTO group_membership (gtid, uid) VALUES ($1, $2) RETURNING *",
       [groupId, userId]
     );
 
-    //console.log(result.rows[0]);
     res.json(result.rows[0]);
-  } catch (e) {
-    console.log(e);
-    return res.status(400).json({ e });
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ error });
   }
 });
 
 // Delete Membership
-app.delete("/membership", async (req, res) => {
+app.delete("/group/:groupId/leave", async (req, res) => {
   try {
-    const { groupId, userId } = req.body;
-
+    const { groupId } = req.params ; // Make sure userId is included in the request body
+    const userId = await getUserId(req.body.sub)
+     
     const result = await db.query(
-      "DELETE FROM membership WHERE gtid = $1 AND uid = $2 RETURNING *",
+      "DELETE FROM group_membership WHERE gtid = $1 AND uid = $2 RETURNING *",
       [groupId, userId]
     );
 
-    console.log(result.rows[0]);
     res.json(result.rows[0]);
-  } catch (e) {
-    console.log(e);
-    return res.status(400).json({ e });
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ error });
   }
 });
+
+
 
 app.listen(PORT, () => {
   console.log(`Hola, Server listening on ${PORT}`);
