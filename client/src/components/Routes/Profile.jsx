@@ -34,7 +34,7 @@ const Profile = () => {
     // Replace `YOUR_API_ENDPOINT` with your actual API endpoint
     const sub = user.sub;
     try {
-      const response = await fetch(`http://localhost:8080/users/${sub}`, {
+      const response = await fetch(`/api/users/${sub}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

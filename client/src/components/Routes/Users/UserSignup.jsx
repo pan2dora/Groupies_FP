@@ -47,7 +47,7 @@ const UserSignup = () => {
     const sub = user.sub;
 //handles the post request to server to add user data to database if the request is successful 
     try {
-      const response = await fetch(`http://localhost:8080/users/${sub}`, {
+      const response = await fetch(`/api/users/${sub}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

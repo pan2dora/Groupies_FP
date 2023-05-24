@@ -20,5 +20,8 @@
     "jsonwebtoken": "^9.0.0",
     "nodemon": "^2.0.22",
     "pg-promise": "^11.4.3"
+  },
+  "devDependencies": {
+    "request": "^2.88.2"
   }
 }

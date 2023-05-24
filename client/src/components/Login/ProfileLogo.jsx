@@ -8,7 +8,7 @@ const ProfileLogo = () => {
 
   const addUser = async (userData) => {
     try {
-      const response = await fetch("http://localhost:8080/newuser", {
+      const response = await fetch("/api/newuser", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -32,7 +32,7 @@ const ProfileLogo = () => {
 
   const checkUserExists = async (sub) => {
     try {
-      const response = await fetch("http://localhost:8080/checkuser", {
+      const response = await fetch("/api/checkuser", {
         method: "POST",
         headers: {
           Accept: "application/json",

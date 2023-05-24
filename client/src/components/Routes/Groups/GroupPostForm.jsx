@@ -17,7 +17,7 @@ const GroupPostForm = ({ onSavePost, groupId }) => {
       userId: user.sub,
     };
 
-    fetch(`http://localhost:8080/group/${groupId}`, {
+    fetch(`/api/group/${groupId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(post),

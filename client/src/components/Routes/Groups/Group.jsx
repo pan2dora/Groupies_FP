@@ -2,50 +2,51 @@ import GroupList from "./GroupsList";
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import GroupPostForm from "./GroupPostForm";
-import GroupMembership from "./Membership";
+
 import { Card, Grid, Button } from "semantic-ui-react";
 import { useAuth0 } from '@auth0/auth0-react';
+
+
 
 const Group = () => {
   const { groupId } = useParams();
 
-  const {user} = useAuth0();
+  const { user } = useAuth0();
   const sub = user?.sub;
 
   const [posts, setGroupPosts] = useState([]);
   const [isMember, setIsMember] = useState(false);
 
   const loadPosts = () => {
-    fetch(`http://localhost:8080/group/${groupId}`)
+    fetch(`/api/group/${groupId}`)
       .then((response) => response.json())
       .then((posts) => {
         setGroupPosts(posts);
       });
   };
+
   useEffect(() => {
     loadPosts();
-   
   }, []);
 
   const fetchMembershipStatus = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/membership/${groupId}/${sub}`);
+      const response = await fetch(`/api/membership/${groupId}/${sub}`);
       const data = await response.json();
       setIsMember(data.isMember);
-      console.log("membership data from cliet", data)
+      console.log("membership data from client", data);
     } catch (error) {
       console.error('Error fetching membership status:', error);
     }
   };
 
   useEffect(() => {
-      if (user === null){
-        return; 
-      }
+    if (user === null) {
+      return;
+    }
     fetchMembershipStatus();
   }, [user]);
- 
-  console.log("group id in client",groupId)
+
   const onSavePost = (newPost) => {
     setGroupPosts((posts) => [...posts, newPost]);
   };
@@ -53,19 +54,18 @@ const Group = () => {
   const handleJoinOrLeaveGroup = async () => {
     try {
       if (isMember) {
-        await fetch(`http://localhost:8080/group/${groupId}/leave`, {
+        await fetch(`/api/group/${groupId}/leave`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ sub })
-          // Include the userId in the request body
         });
-        console.log( "Test:" , groupId, sub )
+        console.log("Test:", groupId, sub);
         console.log('Successfully left the group');
       } else {
-        await fetch(`http://localhost:8080/group/${groupId}/join`, {
+        await fetch(`/api/group/${groupId}/join`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({sub }) // Include the userId in the request body
+          body: JSON.stringify({ sub })
         });
         console.log('Successfully joined the group');
       }
@@ -74,12 +74,11 @@ const Group = () => {
       console.error('Error joining or leaving the group:', error);
     }
   };
-  
 
   return (
     <>
       <div style={{ marginBottom: "1rem" }}>
-        <GroupMembership groupId={groupId} />
+       
       </div>
       <Grid columns={2} stackable>
         <Grid.Row>
@@ -92,9 +91,7 @@ const Group = () => {
               <Card.Content>
                 <Card.Header>Group Information</Card.Header>
                 <Card.Description>
-                  <p>
-                    This section will contain info and join/unjoin button
-                  </p>
+                  <p>hi</p>
                   <div>
                     <Button onClick={handleJoinOrLeaveGroup}>
                       {isMember ? "Leave Group" : "Join Group"}
@@ -111,4 +108,3 @@ const Group = () => {
 };
 
 export default Group;
-
