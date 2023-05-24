@@ -1,14 +1,18 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-const http = require("http");
+// const http = require("http");
 const path = require("path");
 const db = require("./db/db-connection.js");
-const { auth } = require("express-oauth2-jwt-bearer");
-const bcrypt = require("bcrypt");
+// const { auth } = require("express-oauth2-jwt-bearer");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
+
+//Route for build directory
+const REACT_BUILD_DIR = path.join(__dirname, "..", "client", "dist");
+app.use(express.static(REACT_BUILD_DIR));
+
 
 app.use(cors());
 app.use(express.json());
@@ -17,11 +21,76 @@ const token = process.env.ACCESS_TOKEN;
 //console.log(token);
 
 
+
+
+
+
+
 app.get("/", (req, res) => {
-  res.json({ message: "Hola, from My template ExpressJS with React-Vite" });
+  // res.json({ message: "Hola, from My template ExpressJS with React-Vite" });
+  res.sendFile(path.join(REACT_BUILD_DIR, "index.html"));
 });
+/****************************Spotify API************************ */
+// const spotify_client_id = process.env.SPOTIFY_CLIENT_ID;
+// const spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET;
+// const spotify_redirect_uri = process.env.SPOTIFY_REDIRECT_URI;
 
+// var generateRandomString = function (length) {
+//   var text = '';
+//   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
+//   for (var i = 0; i < length; i++) {
+//     text += possible.charAt(Math.floor(Math.random() * possible.length));
+//   }
+//   return text;
+// };
+
+// app.get('/auth/login', (req, res) => {
+
+//   var scope = "streaming user-read-email user-read-private"
+//   var state = generateRandomString(16);
+
+//   var auth_query_parameters = new URLSearchParams({
+//     response_type: "code",
+//     client_id: spotify_client_id,
+//     scope: scope,
+//     redirect_uri: spotify_redirect_uri,
+//     state: state
+//   })
+
+//   res.redirect('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
+// })
+
+// app.get('/auth/callback', (req, res) => {
+
+//   var code = req.query.code;
+
+//   var authOptions = {
+//     url: 'https://accounts.spotify.com/api/token',
+//     form: {
+//       code: code,
+//       redirect_uri: spotify_redirect_uri,
+//       grant_type: 'authorization_code'
+//     },
+//     headers: {
+//       'Authorization': 'Basic ' + (Buffer.from(spotify_client_id + ':' + spotify_client_secret).toString('base64')),
+//       'Content-Type' : 'application/x-www-form-urlencoded'
+//     },
+//     json: true
+//   };
+
+//   request.post(authOptions, function(error, response, body) {
+//     if (!error && response.statusCode === 200) {
+//       access_token = body.access_token;
+//       res.redirect('/')
+//     }
+//   });
+
+// })
+
+// app.get('/auth/token', (req, res) => {
+//   res.json({ access_token: access_token})
+// })
 
 /******************** User Feature Routes **********************/
 // Utility function to check if a user already exists
@@ -32,39 +101,35 @@ const getUser = async (sub) => {
       "SELECT * FROM user_table WHERE auth0_sub = $1",
       [sub]
     );
-    if (result.rowCount === 1){
-      return result.rows[0]
-    }else{
+    if (result.rowCount === 1) {
+      return result.rows[0];
+    } else {
       return null;
     }
-  
   } catch (error) {
     console.log(error);
     throw error;
   }
-}
-
-//Maked sure 
-const checkUserExists = async (sub) => {
-    return await getUser(sub)!== null; 
- 
 };
-// Create a function called get user, create query and a function 
+
+//Maked sure
+const checkUserExists = async (sub) => {
+  return (await getUser(sub)) !== null;
+};
+// Create a function called get user, create query and a function
 //This grabs user id
 
-const getUserId = async (sub) =>{
+const getUserId = async (sub) => {
+  const user = await getUser(sub);
+  if (user !== null) {
+    return user.user_id;
+  } else {
+    return null;
+  }
+};
 
-    const user = await getUser(sub)
-    if (user !== null){
-      return user.user_id;
-    }else{
-      return null;
-    }
-}
-
-
-//Check if user exist for sign up 
-app.post("/checkuser", async (req, res) => {
+//Check if user exist for sign up
+app.post("/api/checkuser", async (req, res) => {
   try {
     const { sub } = req.body;
     const userExists = await checkUserExists(sub);
@@ -75,9 +140,8 @@ app.post("/checkuser", async (req, res) => {
   }
 });
 
-
 //Create new user
-app.post("/newuser", async (req, res) => {
+app.post("/api/newuser", async (req, res) => {
   try {
     const { email, given_name, picture, sub } = req.body;
 
@@ -117,14 +181,12 @@ app.post("/newuser", async (req, res) => {
   }
 });
 
-
-
 // Update user route
-app.put("/users/:sub", async (req, res) => {
+app.put("/api/users/:sub", async (req, res) => {
   try {
     const sub = req.params.sub;
     const { displayName, pronouns, dateOfBirth, picture } = req.body;
-    
+
     console.log("Received request body:", req.body);
 
     const userExists = await checkUserExists(sub);
@@ -148,20 +210,19 @@ app.put("/users/:sub", async (req, res) => {
 
     console.log("User data updated successfully", result.rows[0]);
 
-    res.json({ message: "User data updated successfully", user: result.rows[0] });
+    res.json({
+      message: "User data updated successfully",
+      user: result.rows[0],
+    });
   } catch (error) {
     console.error("Error updating user data:", error);
     res.status(500).json({ error: "Error updating user data" });
   }
 });
 
-
-
-
-
 /******************** Group Feature Routes **********************/
 //Create group
-app.post("/group", async (req, res) => {
+app.post("/api/group", async (req, res) => {
   try {
     const newGroup = {
       group_name: req.body.group_name,
@@ -170,12 +231,12 @@ app.post("/group", async (req, res) => {
       "INSERT INTO group_table (group_name) VALUES ($1) RETURNING *",
       [newGroup.group_name]
     );
-//intialized user id 
-   const userId = await getUserId(req.body.sub)
-    console.log("User id:", userId, typeof userId)
+    //intialized user id
+    const userId = await getUserId(req.body.sub);
+    console.log("User id:", userId, typeof userId);
     const groupId = result.rows[0].group_table_id;
-     // Assuming you have the user_id available in the req.user object
-  
+    // Assuming you have the user_id available in the req.user object
+
     const membership = {
       gtid: groupId,
       uid: userId,
@@ -194,10 +255,9 @@ app.post("/group", async (req, res) => {
   }
 });
 
-
 // Group post
 
-app.get("/allpost", async (req, res) => {
+app.get("/api/allpost", async (req, res) => {
   try {
     const { rows: post } = await db.query(
       "SELECT * FROM group_post ORDER BY group_post_id DESC "
@@ -209,7 +269,7 @@ app.get("/allpost", async (req, res) => {
 });
 
 // Get groups data based on id
-app.get("/group/:groupId", async (req, res) => {
+app.get("/api/group/:groupId", async (req, res) => {
   try {
     const groupId = req.params.groupId;
     const { rows: post } = await db.query(
@@ -225,7 +285,7 @@ app.get("/group/:groupId", async (req, res) => {
 });
 
 // Post to group
-app.post("/group/:groupId", async (req, res) => {
+app.post("/api/group/:groupId", async (req, res) => {
   try {
     const groupId = req.params.groupId;
     const userId = req.params.userId;
@@ -252,40 +312,37 @@ app.post("/group/:groupId", async (req, res) => {
 
 //Create and Delete Memberships
 //Check membership
-app.get("/membership/:groupId/:sub", async (req, res) => {
+app.get("/api/membership/:groupId/:sub", async (req, res) => {
   try {
     const { groupId } = req.params;
 
-    const userId = await getUserId(req.params.sub)
-    console.log("sub from membership:", req.params.sub)
-    console.log("req params fro  membership:", req.params)
-console.log("userId from membership:",userId)
-console.log("groupId from membership:",groupId)
+    const userId = await getUserId(req.params.sub);
+    console.log("sub from membership:", req.params.sub);
+    console.log("req params fro  membership:", req.params);
+    console.log("userId from membership:", userId);
+    console.log("groupId from membership:", groupId);
     const result = await db.query(
       "SELECT * FROM group_membership WHERE gtid = $1 AND uid = $2",
       [groupId, userId]
     );
 
-console.log("Membership result:", result)
-    const isMember = result.rowCount> 0;
+    console.log("Membership result:", result);
+    const isMember = result.rowCount > 0;
     res.json({ isMember });
-    console.log("Membership status:", isMember)
+    console.log("Membership status:", isMember);
   } catch (error) {
     console.error("Error checking membership status:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
-
-
-
 /******************** Membership Feature Routes **********************/
 
 // Join Group
-app.post("/group/:groupId/join", async (req, res) => {
+app.post("/api/group/:groupId/join", async (req, res) => {
   try {
     const { groupId } = req.params;
-    const userId = await getUserId(req.body.sub)// Make sure userId is included in the request body
+    const userId = await getUserId(req.body.sub); // Make sure userId is included in the request body
 
     console.log("userId:", userId);
 
@@ -302,11 +359,11 @@ app.post("/group/:groupId/join", async (req, res) => {
 });
 
 // Delete Membership
-app.delete("/group/:groupId/leave", async (req, res) => {
+app.delete("/api/group/:groupId/leave", async (req, res) => {
   try {
-    const { groupId } = req.params ; // Make sure userId is included in the request body
-    const userId = await getUserId(req.body.sub)
-     
+    const { groupId } = req.params; // Make sure userId is included in the request body
+    const userId = await getUserId(req.body.sub);
+
     const result = await db.query(
       "DELETE FROM group_membership WHERE gtid = $1 AND uid = $2 RETURNING *",
       [groupId, userId]
@@ -319,7 +376,12 @@ app.delete("/group/:groupId/leave", async (req, res) => {
   }
 });
 
+/**************************** Spotify Feature Routes ******************/
 
+app.get("/*", (req, res) => {
+  console.log("/* is executing");
+  res.sendFile(path.join(REACT_BUILD_DIR, "index.html"));
+});
 
 app.listen(PORT, () => {
   console.log(`Hola, Server listening on ${PORT}`);
