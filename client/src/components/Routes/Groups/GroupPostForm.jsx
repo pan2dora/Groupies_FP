@@ -51,15 +51,19 @@ const GroupPostForm = ({ onSavePost, groupId }) => {
   };
 
   const handleAddGif = (result) => {
-    const gifUrl = result.gif.url;
-    setSelectedGif(gifUrl);
+    if (selectedGif === result) {
+      // If the same GIF is clicked again, deselect it
+      setSelectedGif(null);
+    } else {
+      setSelectedGif(result);
+    }
   };
 
   const addNewPost = () => {
     const post = {
       content: newPost,
       userId: user.sub,
-      image: selectedGif || null,
+      image: selectedGif ? selectedGif.gif.url : null,
     };
 
     fetch(`/api/group/${groupId}`, {
@@ -89,7 +93,7 @@ const GroupPostForm = ({ onSavePost, groupId }) => {
       <Modal
         trigger={
           <Button onClick={handleModalOpen} fluid>
-            {newPost ? newPost : "What's on your mind?"}
+            {"What's on your mind?"}
           </Button>
         }
         open={modalOpen}
@@ -98,7 +102,7 @@ const GroupPostForm = ({ onSavePost, groupId }) => {
       >
         <Modal.Header>Create Post</Modal.Header>
         <Modal.Content>
-          <Form onSubmit={handleSubmit}>
+          <Form>
             <Form.TextArea
               value={newPost}
               required
@@ -114,24 +118,35 @@ const GroupPostForm = ({ onSavePost, groupId }) => {
               />
             </Form.Field>
             <Button onClick={handleSearchGifs}>Search</Button>
+
             {searchResults.length > 0 && (
               <Card.Group itemsPerRow={4}>
                 {searchResults.map((result) => (
                   <Card key={result.id}>
-                    <Image src={result.gif.url} alt="GIF" />
-                    <Card.Content extra>
-                      <Button
-                        fluid
-                        basic
-                        color="blue"
-                        onClick={() => handleAddGif(result)}
-                      >
-                        Add
-                      </Button>
-                    </Card.Content>
+                    <div
+                      onClick={() => handleAddGif(result)}
+                      className={`gif-image ${selectedGif === result ? "selected" : ""}`}
+                    >
+                      <Image src={result.gif.url} alt="GIF" />
+                    </div>
                   </Card>
                 ))}
               </Card.Group>
+            )}
+
+            {newPost && (
+              <div>
+                <h3>Preview:</h3>
+                <p>{newPost}</p>
+                {selectedGif && (
+                  <img
+                    src={selectedGif.gif.url}
+                    alt="GIF"
+                    onClick={() => handleAddGif(selectedGif)}
+                    className="selected-gif"
+                  />
+                )}
+              </div>
             )}
           </Form>
         </Modal.Content>
