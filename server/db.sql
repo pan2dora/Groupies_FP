@@ -253,11 +253,10 @@ INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (3, 8, true);
 INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (2, 8, true);
 INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (66, 8, true);
 INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (67, 8, true);
-INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (71, 11, true);
 INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (72, 11, true);
 INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (73, 11, true);
-INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (58, 11, NULL);
-INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (73, 11, NULL);
+INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (71, 11, NULL);
+INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (74, 11, true);
 INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (1, 11, NULL);
 
 
@@ -265,25 +264,13 @@ INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (1, 11, NULL);
 -- Data for Name: group_post; Type: TABLE DATA; Schema: public; Owner: panpan
 --
 
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (1, 'http://dummyimage.com/190x100.png/cc0000/ffffff', 'Just got rescued by my favorite plumber/bodyguard again! Thanks for always being there, Mario! 🙌🏼👑💕 #SuperMarioBros #SavedAgain #PlumberBodyguard', 2, 1);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (8, 'postman test', 'postman test', NULL, 1);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (9, 'test', 'yadyayayd', 8, 1);
+INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (165, 'https://media1.giphy.com/media/tLQSYnrLCGcKY/200.gif?cid=d168aec02ihltpr5vi3so9d4z2yy9rm4m4sehmo7h928iwzv&ep=v1_gifs_search&rid=200.gif&ct=g', 'Hi my name is slim shady ', NULL, 71);
+INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (166, 'https://media3.giphy.com/media/gzoOh4SkStpZQxZTzG/200.gif?cid=d168aec0iyfgc1udr1zp1jl5mxpvwgmgcb9qfiae54chrxw3&ep=v1_gifs_search&rid=200.gif&ct=g', 'Test', NULL, 1);
+INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (167, 'https://media3.giphy.com/media/1BipZPeQvML3KX5Rw4/200.gif?cid=d168aec0iyfgc1udr1zp1jl5mxpvwgmgcb9qfiae54chrxw3&ep=v1_gifs_search&rid=200.gif&ct=g', 'test', NULL, 1);
+INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (168, 'https://media2.giphy.com/media/3ohhwxmNcPvwyRqYKI/200.gif?cid=d168aec05lcc9t1je2rljypnn6pwkw13ciao9ps8596wleh5&ep=v1_gifs_search&rid=200.gif&ct=g', 'hyjhjhjhj', NULL, 1);
+INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (169, 'https://media1.giphy.com/media/apYCS6KL5Z462QzKBZ/200.gif?cid=d168aec0omasjc3bradlvfs0tfkc9c0s7aq2tdvo3juv3aob&ep=v1_gifs_search&rid=200.gif&ct=g', 'h', NULL, 1);
 INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (2, 'http://dummyimage.com/190x100.png/cc0000/ffffff', 'Another day, another thwarted attempt by Mario to defeat me with those silly power-ups. It''s like he doesn''t even know who he''s dealing with! 😂🔥🐢 #Bowser #KingKoopa #Unstoppable"', 4, 2);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (3, 'http://dummyimage.com/190x100.png/cc0000/ffffff', '"Feeling strong 💪🏼 and ready to crush some barrels today! Who else is with me? 🦍🔨 #DonkeyKong #GorillaPower #BarrelSmasher"', 5, 2);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (15, 'This is a post test', 'This is a post test', NULL, 1);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (16, NULL, 'hi', NULL, 2);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (17, NULL, 'This is a test to see if it post to groups', NULL, 1);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (19, NULL, 'Authentication test', NULL, 1);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (20, NULL, 'Test', NULL, 2);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (21, NULL, 'hi', NULL, 1);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (22, NULL, 'hi', NULL, 3);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (23, NULL, 'Test', NULL, 2);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (24, NULL, 'This is a test', NULL, 1);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (25, NULL, 'Test', NULL, 2);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (26, NULL, 'Hello test', NULL, 2);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (27, NULL, 'gf', NULL, 3);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (28, NULL, 'yes', NULL, 58);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (29, NULL, 'hi', NULL, 2);
+INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (1, 'http://dummyimage.com/190x100.png/cc0000/ffffff', 'Just got rescued by my favorite plumber/bodyguard again! Thanks for always being there, Mario! 🙌🏼👑💕 #SuperMarioBros #SavedAgain #PlumberBodyguard', 2, 71);
 
 
 --
@@ -324,6 +311,7 @@ INSERT INTO public.group_table (group_table_id, group_name) VALUES (70, 'Test');
 INSERT INTO public.group_table (group_table_id, group_name) VALUES (71, 'Anotha test');
 INSERT INTO public.group_table (group_table_id, group_name) VALUES (72, 'Test');
 INSERT INTO public.group_table (group_table_id, group_name) VALUES (73, 'Grouptestforadmin');
+INSERT INTO public.group_table (group_table_id, group_name) VALUES (74, 'lala land');
 
 
 --
@@ -364,14 +352,14 @@ SELECT pg_catalog.setval('public.comments_comment_id_seq', 1, true);
 -- Name: group_table_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: panpan
 --
 
-SELECT pg_catalog.setval('public.group_table_group_id_seq', 73, true);
+SELECT pg_catalog.setval('public.group_table_group_id_seq', 74, true);
 
 
 --
 -- Name: post_post_id_seq; Type: SEQUENCE SET; Schema: public; Owner: panpan
 --
 
-SELECT pg_catalog.setval('public.post_post_id_seq', 29, true);
+SELECT pg_catalog.setval('public.post_post_id_seq', 169, true);
 
 
 --

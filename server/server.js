@@ -11,6 +11,8 @@ const PORT = process.env.PORT || 8080;
 const apiKey =process.env.VITE_GIPHY_API_KEY;
 const baseURL = "api.giphy.com/v1/gifs/search";
 
+console.log("Api key is:", apiKey)
+
 //Route for build directory
 const REACT_BUILD_DIR = path.join(__dirname, "..", "client", "dist");
 app.use(express.static(REACT_BUILD_DIR));
@@ -33,7 +35,20 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(REACT_BUILD_DIR, "index.html"));
 });
 /****************************Giphy API************************ */
+app.get("/api/giphy", async (req, res) => {
+  try {
+   
+    const limit = 5;
 
+    const response = await fetch(`${baseURL}/trending?api_key=${apiKey}&limit=${limit}`);
+    const data = await response.json();
+
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching GIFs:", error);
+    res.status(500).json({ error: "Failed to fetch GIFs" });
+  }
+});
 
 
 
@@ -214,6 +229,12 @@ app.get("/api/allpost", async (req, res) => {
     return res.status(400).json({ e });
   }
 });
+
+//users data for group post 
+
+
+
+
 
 // Get groups data based on id
 app.get("/api/group/:groupId", async (req, res) => {
