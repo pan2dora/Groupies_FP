@@ -19,10 +19,10 @@ const CreateGroup = () => {
   const addNewGroup = () => {
     const group = {
       group_name: newGroup,
-      user_id: user.sub, // Use the user's ID from Auth0 as the user_id
+      sub: user.sub // Use the user's ID from Auth0 as the user_id
     };
 
-    fetch('http://localhost:8080/group', {
+    fetch('/api/group', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(group),

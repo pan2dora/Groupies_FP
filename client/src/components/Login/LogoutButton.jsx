@@ -8,6 +8,7 @@ const LogoutButton = () => {
     logout({
       logoutParams: {
         returnTo: window.location.origin,
+       
       },
     });
   };
