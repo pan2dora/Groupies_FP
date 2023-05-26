@@ -89,6 +89,7 @@ const Group = () => {
           <Grid.Column width={6}>
             <Card fluid>
               <Card.Content>
+              
                 <Card.Description>
               
                   <div>

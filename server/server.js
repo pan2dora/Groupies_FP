@@ -150,14 +150,13 @@ app.put("/api/users/:sub", async (req, res) => {
     console.log("Updating user data:", {
       displayName,
       pronouns,
-      dateOfBirth,
       picture,
       sub,
     });
 
     const result = await db.query(
-      "UPDATE user_table SET displayname = $1, pronouns = $2, date_of_birth = $3, picture = $4 WHERE auth0_sub = $5 RETURNING *",
-      [displayName, pronouns, dateOfBirth, picture, sub]
+      "UPDATE user_table SET displayname = $1, pronouns = $2,picture = $3 WHERE auth0_sub = $4 RETURNING *",
+      [displayName, pronouns,picture, sub]
     );
 
     console.log("User data updated successfully", result.rows[0]);
@@ -187,7 +186,8 @@ app.get("/api/feed/:sub", async (req, res) => {
         group_table.group_name,
         post_user.displayname,
         post_user.picture,
-        post_user.auth0_sub
+        post_user.auth0_sub,
+        post_user.pronouns
       FROM group_post
       JOIN group_membership ON group_post.group_table_id = group_membership.gtid
       JOIN group_table ON group_membership.gtid = group_table.group_table_id
@@ -233,12 +233,13 @@ app.post("/api/group", async (req, res) => {
   try {
     const newGroup = {
       group_name: req.body.group_name,
+      description: req.body.description
     };
     const result = await db.query(
-      "INSERT INTO group_table (group_name) VALUES ($1) RETURNING *",
-      [newGroup.group_name]
+      "INSERT INTO group_table (group_name, description) VALUES ($1, $2) RETURNING *",
+      [newGroup.group_name, newGroup.description]
     );
-    //intialized user id
+    // Initialize user id
     const userId = await getUserId(req.body.sub);
     console.log("User id:", userId, typeof userId);
     const groupId = result.rows[0].group_table_id;
@@ -255,12 +256,13 @@ app.post("/api/group", async (req, res) => {
       [membership.gtid, membership.uid, membership.is_admin]
     );
 
-    res.status(200).json({ message: "Group created successfully" });
+    res.status(200).json({ group_name: newGroup.group_name, description: newGroup.description });
   } catch (error) {
     console.error("Error creating group:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 // Group post
 
