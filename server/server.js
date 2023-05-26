@@ -174,32 +174,26 @@ app.put("/api/users/:sub", async (req, res) => {
 
 /******************* Home Feature Routes  *********************/
 //Feed -> If user is a memeber select all post from that group
-
 app.get("/api/feed/:sub", async (req, res) => {
   try {
     const sub = req.params.sub;
 
     const { rows: results } = await db.query(`
-      SELECT 
+      SELECT
         group_post.group_post_id,
         group_post.group_table_id,
         group_post.content,
         group_post.image,
         group_table.group_name,
-        user_table.displayname,
-        user_table.picture,
-        user_table.auth0_sub
+        post_user.displayname,
+        post_user.picture,
+        post_user.auth0_sub
       FROM group_post
       JOIN group_membership ON group_post.group_table_id = group_membership.gtid
       JOIN group_table ON group_membership.gtid = group_table.group_table_id
-      JOIN user_table ON group_membership.uid = user_table.user_id
-      WHERE group_membership.uid IN (
-        SELECT uid FROM group_membership WHERE gtid IN (
-          SELECT gtid FROM group_membership WHERE uid = (
-            SELECT user_id FROM user_table WHERE auth0_sub = $1
-          )
-        )
-      )
+      JOIN user_table AS post_user ON group_post.user_id = post_user.user_id
+      JOIN user_table AS logged_user ON group_membership.uid = logged_user.user_id
+      WHERE logged_user.auth0_sub = $1
     `, [sub]);
 
     res.send(results);
@@ -208,6 +202,9 @@ app.get("/api/feed/:sub", async (req, res) => {
     return res.status(400).json({ e });
   }
 });
+
+    
+
 
 
 
