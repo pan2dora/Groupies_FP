@@ -8,28 +8,15 @@ Groupies was born out of a desire to bring people together, providing a platform
 
 ## Features
 
-Unique Profiles: Create your own vibrant profile with personalized pictures, catchy bios, and a groovy playlist from Spotify.
-
 Join Cool Groups: Discover and join a variety of groups based on your interests, hobbies, or favorite topics. Connect with like-minded individuals who share your passions.
 
-Create Your Own Group: Be the trendsetter! Start your own group and invite others to join. Share your love for music, art, sports, or anything that gets your creative juices flowing.
+Create Your Own Group: Be the trendsetter! Start your own group and invite others to join. Share your love for art, movies, animals, or anything that sparks your creativity.
 
 Like and Comment: Show appreciation for your friends' posts and updates with likes. Leave comments to spark conversations and engage with the community.
 
-Rock Your Playlist: Add your favorite tracks to your profile's Spotify playlist and let others groove to your unique music taste. Discover new jams from fellow Groupies.
+Rock Your GIFs: Add your favorite animated GIFs to your profile and let others enjoy your unique collection. Discover new funny, cute, or expressive GIFs from fellow Groupies.
 
-Join Groupies today and let your profile shine, join awesome groups, and create an online community that rocks! It's time to relive the spirit of MySpace with a modern twist. Let the good times roll! 🎵🎉
-
-## Roadmap
-
-- Additional browser support
-
-- Add more integrations
-
-
-## Installation
-
-
+Join Groupies today and let your profile shine, join awesome groups, and create an online community that's full of animated fun! Let the good times roll! 🎉🐱
 
 ```bash
   git clone https://github.com/pan2dora/Groupies_FP
