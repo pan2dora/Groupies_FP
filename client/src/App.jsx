@@ -28,6 +28,7 @@ import UserSignup from "./components/Routes/Users/UserSignup";
 function App() {
   return (
     <>
+
    <header>
     <MyNavBar/>
    </header>
