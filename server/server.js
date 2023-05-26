@@ -8,27 +8,20 @@ const db = require("./db/db-connection.js");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
-const apiKey =process.env.VITE_GIPHY_API_KEY;
+const apiKey = process.env.VITE_GIPHY_API_KEY;
 const baseURL = "api.giphy.com/v1/gifs/search";
 
-console.log("Api key is:", apiKey)
+console.log("Api key is:", apiKey);
 
 //Route for build directory
 const REACT_BUILD_DIR = path.join(__dirname, "..", "client", "dist");
 app.use(express.static(REACT_BUILD_DIR));
-
 
 app.use(cors());
 app.use(express.json());
 
 const token = process.env.ACCESS_TOKEN;
 //console.log(token);
-
-
-
-
-
-
 
 app.get("/", (req, res) => {
   // res.json({ message: "Hola, from My template ExpressJS with React-Vite" });
@@ -37,10 +30,11 @@ app.get("/", (req, res) => {
 /****************************Giphy API************************ */
 app.get("/api/giphy", async (req, res) => {
   try {
-   
     const limit = 5;
 
-    const response = await fetch(`${baseURL}/trending?api_key=${apiKey}&limit=${limit}`);
+    const response = await fetch(
+      `${baseURL}/trending?api_key=${apiKey}&limit=${limit}`
+    );
     const data = await response.json();
 
     res.json(data);
@@ -49,10 +43,6 @@ app.get("/api/giphy", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch GIFs" });
   }
 });
-
-
-
-
 
 /******************** User Feature Routes **********************/
 // Utility function to check if a user already exists
@@ -182,6 +172,27 @@ app.put("/api/users/:sub", async (req, res) => {
   }
 });
 
+/******************* Home Feature Routes  *********************/
+//Feed -> If user is a memeber select all post from that group
+
+app.get("/api/feed/:sub", async (req, res) => {
+  try {
+    const sub = req.params.sub;
+
+    const { rows: results } = await db.query(`
+    SELECT * FROM group_post
+    JOIN group_membership ON group_post.group_table_id = group_membership.gtid
+    JOIN group_table ON group_membership.gtid = group_table.group_table_id
+    JOIN user_table ON group_membership.uid = user_table.user_id
+    WHERE user_table.auth0_sub = $1
+  `, [sub]);
+    res.json(results);
+  } catch (e) {
+    console.log(e);
+    return res.status(400).json({ e });
+  }
+});
+
 /******************** Group Feature Routes **********************/
 //Create group
 app.post("/api/group", async (req, res) => {
@@ -230,11 +241,7 @@ app.get("/api/allpost", async (req, res) => {
   }
 });
 
-//users data for group post 
-
-
-
-
+//users data for group post
 
 // Get groups data based on id
 app.get("/api/group/:groupId", async (req, res) => {
@@ -256,16 +263,23 @@ app.get("/api/group/:groupId", async (req, res) => {
 app.post("/api/group/:groupId", async (req, res) => {
   try {
     const groupId = req.params.groupId;
-    const userId = req.params.userId;
+    const userId = await getUserId(req.body.userId); //get id from the request body --> used utitily function to grab users id
+    console.log("This is the group id", groupId)
+  
+    console.log("This is the user id", userId)
+    
     const newPost = {
       content: req.body.content,
       image: req.body.image,
     };
+    // console.log("pleas work", newPost.user_id)
+    // console.log("This is content", newPost.content)
+    // console.log("user id:", userId);
 
     const query =
       "INSERT INTO group_post (image, content, user_id, group_table_id) VALUES ($1, $2, $3, $4) RETURNING *";
     const values = [newPost.image, newPost.content, userId, groupId]; // Assuming you have the authenticated user's ID
-
+console.log("This is after the call", userId)
     const result = await db.query(query, values);
 
     const postedGroup = result.rows[0];
@@ -278,6 +292,15 @@ app.post("/api/group/:groupId", async (req, res) => {
   }
 });
 
+
+
+
+
+
+
+
+
+
 //Create and Delete Memberships
 //Check membership
 app.get("/api/membership/:groupId/:sub", async (req, res) => {
@@ -285,15 +308,15 @@ app.get("/api/membership/:groupId/:sub", async (req, res) => {
     const { groupId } = req.params;
 
     const userId = await getUserId(req.params.sub);
-    console.log("sub from membership:", req.params.sub);
-    console.log("req params fro  membership:", req.params);
-    console.log("userId from membership:", userId);
-    console.log("groupId from membership:", groupId);
+    // console.log("sub from membership:", req.params.sub);
+    // console.log("req params fro  membership:", req.params);
+    // console.log("userId from membership:", userId);
+    // console.log("groupId from membership:", groupId);
     const result = await db.query(
       "SELECT * FROM group_membership WHERE gtid = $1 AND uid = $2",
       [groupId, userId]
     );
-
+ 
     console.log("Membership result:", result);
     const isMember = result.rowCount > 0;
     res.json({ isMember });
