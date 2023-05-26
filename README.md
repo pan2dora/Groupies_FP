@@ -25,19 +25,6 @@ Groupies is a vibrant social platform where like-minded individuals can connect,
 
 Remember to follow the community guidelines and be respectful towards other users. Enjoy the Groupies experience by connecting with others, sharing your interests, and expressing yourself with the power of GIFs!
 
-## Features
-
--   **Create and Join Groups:** Discover and become a member of various groups based on your interests, hobbies, or favorite topics. Engage in exciting discussions and be a part of a community that shares your passions.
-    
--   **Express with Giphy:** Add animated GIFs from Giphy to your posts and comments to spice them up. Share your emotions, reactions, and funny moments in a unique and lively way.
-    
--   **Personalized Profiles:** Create your own dynamic profile with personalized pictures, catchy bios, and a collection of animated GIFs. Let your personality shine and make a memorable impression within the Groupies community.
-    
--   **Group Management:** Take charge and start your own group! Be a trendsetter by inviting others to join your community. Share your love for music, art, sports, or any other interest that fuels your creativity.
-    
--   **Interact and Connect:** Show appreciation by liking and commenting on posts, initiating engaging conversations. Connect with fellow Groupies, make new friends, and build a supportive network.
-    
--   **Discover New GIFs:** Explore an extensive library of animated GIFs from Giphy. Discover trending, funny, and expressive GIFs that perfectly capture your thoughts and moods.
 
 
 ## Groupies Setup Checklist
