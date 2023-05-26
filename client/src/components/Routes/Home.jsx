@@ -34,6 +34,7 @@ const Home = () => {
                 <Image floated="left" size="mini" src={post.picture} />
                 <Card.Header>{post.group_name}</Card.Header>
                 <Card.Meta>{post.displayname}</Card.Meta>
+                <Card.Meta>({post.pronouns})</Card.Meta>
                 <Card.Description>{post.content}</Card.Description>
                 <Image src={post.image} />
               </Card.Content>
@@ -44,7 +45,7 @@ const Home = () => {
           ))}
         </Grid.Column>
         <Grid.Column width={6}>
-          <Card style={{ backgroundColor: "#f9f9f9", padding: "1rem" }}>
+          <Card style={{ backgroundColor: "white", padding: "1rem" }}>
             <Card.Header>Groups</Card.Header>
             {feedData.groupNames.length > 0 ? (
               <ul>

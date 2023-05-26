@@ -21,9 +21,9 @@ const Explore = () => {
 
   return (
     <Container style={{ paddingTop: "1rem" }}>
-      <Card.Group>
+      <Card.Group itemsPerRow={3}>
         {groups.map((group) => (
-          <Card key={group.group_name} as={Link} to={`/group/${group.group_table_id}`}>
+          <Card key={group.group_name} as={Link} to={`/group/${group.group_table_id}`} raised>
             <Card.Content>
               <Card.Header>{group.group_name}</Card.Header>
               <Card.Description>{group.description}</Card.Description>
