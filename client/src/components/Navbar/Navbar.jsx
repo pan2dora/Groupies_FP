@@ -12,7 +12,7 @@ function MyNavBar(props) {
   const { isAuthenticated, user } = useAuth0();
 
   let Links = [
-    { name: "Explore", link: "/groups" },
+    { name: "Explore", link: "/explore" },
     { name: "About", link: "/about" },
   ];
 
