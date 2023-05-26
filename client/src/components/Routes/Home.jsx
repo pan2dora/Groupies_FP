@@ -47,10 +47,13 @@ return (
       <Grid.Column width={10}>
        {feedPosts.map((post) => (
           <Card fluid key={post.group_post_id}>
-            <Image src={post.picture}> </Image>
+           
             <Card.Content>
-            <Card.Header>{post.group_name}</Card.Header>
-              <Card.Header>{post.displayname}</Card.Header>
+              
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+  <Image src={post.picture} avatar />
+  <Card.Header>{post.displayname}</Card.Header>
+</div>
             <Card.Description>{post.content}</Card.Description>
               {post.image && (
                 <Image size="large" centered src={post.image} />
