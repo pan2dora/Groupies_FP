@@ -197,18 +197,21 @@ app.get("/api/feed/:sub", async (req, res) => {
     `, [sub]);
 
     const { rows: groupNames } = await db.query(`
-  SELECT 
-    group_table.group_table_id,
-    group_table.group_name
-  FROM group_table
-  JOIN group_membership ON group_table.group_table_id = group_membership.gtid
-  JOIN user_table ON group_membership.uid = user_table.user_id
-  WHERE user_table.auth0_sub = $1
-`, [sub]);
+      SELECT 
+        group_table.group_table_id,
+        group_table.group_name
+      FROM group_table
+      JOIN group_membership ON group_table.group_table_id = group_membership.gtid
+      JOIN user_table ON group_membership.uid = user_table.user_id
+      WHERE user_table.auth0_sub = $1
+    `, [sub]);
 
     const feedData = {
       feedPosts: results,
-      groupNames: groupNames.map((group) => group.group_name),
+      groupNames: groupNames.map((group) => ({
+        group_table_id: group.group_table_id,
+        group_name: group.group_name
+      })),
     };
 
     res.send(feedData);
@@ -217,6 +220,7 @@ app.get("/api/feed/:sub", async (req, res) => {
     return res.status(400).json({ e });
   }
 });
+
 
     
 

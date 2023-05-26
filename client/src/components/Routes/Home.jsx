@@ -22,6 +22,8 @@ const Home = () => {
     loadFeedData();
   }, [sub]);
 
+  const getGroupLink = (groupId) => `http://localhost:5173/group/${groupId}`;
+
   return (
     <Container style={{ paddingTop: "1rem" }}>
       <Grid columns={2}>
@@ -32,8 +34,7 @@ const Home = () => {
                 <Image floated="left" size="mini" src={post.picture} />
                 <Card.Header>{post.group_name}</Card.Header>
                 <Card.Meta>{post.displayname}</Card.Meta>
-               
- <Card.Description>{post.content}</Card.Description>
+                <Card.Description>{post.content}</Card.Description>
                 <Image src={post.image} />
               </Card.Content>
               <Card.Content extra>
@@ -43,20 +44,20 @@ const Home = () => {
           ))}
         </Grid.Column>
         <Grid.Column width={6}>
-          <div style={{ backgroundColor: "#f9f9f9", padding: "1rem" }}>
-            <h3>Groups</h3>
+          <Card style={{ backgroundColor: "#f9f9f9", padding: "1rem" }}>
+            <Card.Header>Groups</Card.Header>
             {feedData.groupNames.length > 0 ? (
               <ul>
-                {feedData.groupNames.map((groupName) => (
-                  <li key={groupName} style={{ marginBottom: "0.5rem" }}>
-                    {groupName}
+                {feedData.groupNames.map((group) => (
+                  <li key={group.group_table_id} style={{ marginBottom: "0.5rem" }}>
+                    <a href={getGroupLink(group.group_table_id)}>{group.group_name}</a>
                   </li>
                 ))}
               </ul>
             ) : (
               <p>No groups available</p>
             )}
-          </div>
+          </Card>
         </Grid.Column>
       </Grid>
     </Container>
@@ -64,4 +65,3 @@ const Home = () => {
 };
 
 export default Home;
-
