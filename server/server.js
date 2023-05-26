@@ -180,18 +180,36 @@ app.get("/api/feed/:sub", async (req, res) => {
     const sub = req.params.sub;
 
     const { rows: results } = await db.query(`
-    SELECT * FROM group_post
-    JOIN group_membership ON group_post.group_table_id = group_membership.gtid
-    JOIN group_table ON group_membership.gtid = group_table.group_table_id
-    JOIN user_table ON group_membership.uid = user_table.user_id
-    WHERE user_table.auth0_sub = $1
-  `, [sub]);
-    res.json(results);
+      SELECT 
+        group_post.group_post_id,
+        group_post.group_table_id,
+        group_post.content,
+        group_post.image,
+        group_table.group_name,
+        user_table.displayname,
+        user_table.picture,
+        user_table.auth0_sub
+      FROM group_post
+      JOIN group_membership ON group_post.group_table_id = group_membership.gtid
+      JOIN group_table ON group_membership.gtid = group_table.group_table_id
+      JOIN user_table ON group_membership.uid = user_table.user_id
+      WHERE group_membership.uid IN (
+        SELECT uid FROM group_membership WHERE gtid IN (
+          SELECT gtid FROM group_membership WHERE uid = (
+            SELECT user_id FROM user_table WHERE auth0_sub = $1
+          )
+        )
+      )
+    `, [sub]);
+
+    res.send(results);
   } catch (e) {
     console.log(e);
     return res.status(400).json({ e });
   }
 });
+
+
 
 /******************** Group Feature Routes **********************/
 //Create group
@@ -235,7 +253,7 @@ app.get("/api/allpost", async (req, res) => {
     const { rows: post } = await db.query(
       "SELECT * FROM group_post ORDER BY group_post_id DESC "
     );
-    res.send(post);
+    res.json(post);
   } catch (e) {
     return res.status(400).json({ e });
   }
