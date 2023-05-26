@@ -12,11 +12,12 @@ const Home = () => {
 
   const { user } = useAuth0();
   const sub = user?.sub;
-  
+  let query = `/api/feed/${sub}`
+
   const [feedPosts, setFeedPosts] = useState([])
 
   const loadFeedPosts = () => {
-    fetch(`/api/feed/${sub}`)
+    fetch(query)
   
   .then((response) => response.json())
   .then((feedPosts) => {
@@ -33,6 +34,10 @@ loadFeedPosts();
 }, [feedPosts]);
 
 
+const LoadGroupLinks = () => {
+  fetch(`/api/feed/${sub}`)
+  .then((response) => response.json())
+}
 
 
 
@@ -46,7 +51,7 @@ return (
               {post.image && (
                 <Image floated="left" size="mini" src={post.image} />
               )}
-              <Card.Header>{post.display_name}</Card.Header>
+              <Card.Header>{post.displayname}</Card.Header>
               <Card.Meta>{post.date}</Card.Meta>
               <Card.Description>{post.content}</Card.Description>
             </Card.Content>
