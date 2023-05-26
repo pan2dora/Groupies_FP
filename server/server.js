@@ -327,8 +327,15 @@ console.log("This is after the call", userId)
 });
 
 
-
-
+//get all groups for explore page 
+app.get("/api/groups", async (req, res) => {
+  try {
+    const { rows: groups } = await db.query("SELECT * FROM group_table");
+    res.json(groups);
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+});
 
 
 

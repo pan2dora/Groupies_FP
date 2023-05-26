@@ -8,7 +8,7 @@ import Group from "./components/Routes/Groups/Group";
 import CreateGroup from "./components/Routes/Groups/CreateGroup";
 import 'semantic-ui-css/semantic.min.css'
 import UserSignup from "./components/Routes/Users/UserSignup";
-
+import Explore from "./components/Routes/Explore";
 
 
 
@@ -43,7 +43,7 @@ function App() {
     <Route path="/group/:groupId" element = {<Group/>}/>
    <Route path = "/signup" element = {<UserSignup/>}/>
     <Route path="/create" element = {<CreateGroup/>}/>
- 
+ <Route path="/explore" element = {<Explore/>}/>
  
      </Routes>
    

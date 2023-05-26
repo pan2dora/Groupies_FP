@@ -89,9 +89,8 @@ const Group = () => {
           <Grid.Column width={6}>
             <Card fluid>
               <Card.Content>
-                <Card.Header>Group name</Card.Header>
                 <Card.Description>
-                  <p>hi</p>
+              
                   <div>
                     <Button onClick={handleJoinOrLeaveGroup}>
                       {isMember ? "Leave Group" : "Join Group"}
