@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth0 } from '@auth0/auth0-react';
 
 const Home = () => {
-  console.log("home");
+ 
 
   // Sample groups data (empty for now)
   const groups = [];
@@ -47,13 +47,17 @@ return (
       <Grid.Column width={10}>
        {feedPosts.map((post) => (
           <Card fluid key={post.group_post_id}>
+            <Image src={post.picture}> </Image>
             <Card.Content>
-              {post.image && (
-                <Image floated="left" size="mini" src={post.image} />
-              )}
+            <Card.Header>{post.group_name}</Card.Header>
               <Card.Header>{post.displayname}</Card.Header>
+            <Card.Description>{post.content}</Card.Description>
+              {post.image && (
+                <Image size="large" centered src={post.image} />
+              )}
+              
               <Card.Meta>{post.date}</Card.Meta>
-              <Card.Description>{post.content}</Card.Description>
+            
             </Card.Content>
             <Card.Content extra>
               <p>Like | Comment | Share</p>
