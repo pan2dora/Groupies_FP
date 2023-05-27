@@ -21,7 +21,7 @@ import { BrowserRouter} from 'react-router-dom'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+
   
     <div className=" h-screen sticky bg-yellow-50">
   <BrowserRouter>
@@ -33,5 +33,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
  </div>
    
-  </React.StrictMode>,
+
 )

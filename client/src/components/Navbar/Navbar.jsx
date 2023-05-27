@@ -6,12 +6,13 @@ import LoginButton from "../Login/Login";
 import LogoutButton from "../Login/LogoutButton";
 import SignupButton from "../Login/SignupButton";
 import CreateGroup from "../Routes/Groups/CreateGroup";
+import ProfileLogo from "../Login/ProfileLogo";
 
 function MyNavBar(props) {
   const { isAuthenticated, user } = useAuth0();
 
   let Links = [
-    { name: "Explore", link: "/groups" },
+    { name: "Explore", link: "/explore" },
     { name: "About", link: "/about" },
   ];
 
@@ -27,13 +28,7 @@ function MyNavBar(props) {
         </div>
         {!user ? null : (
           <div>
-            <a href="/profile">
-              <img
-                className="rounded-full center"
-                alt="user-image"
-                src={user.picture}
-              />
-            </a>
+          <ProfileLogo/>
           </div>
         )}
         {/* <a
