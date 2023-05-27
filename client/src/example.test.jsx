@@ -1,7 +1,9 @@
 import React from "react";
 import Home from "./components/Routes/Home";
 import Explore from "./components/Routes/Explore";
-import { render, fireEvent } from "@testing-library/react";
+import Profile from "./components/Routes/Profile";
+import UserSignup from "./components/Routes/Users/UserSignup";
+import { render,  screen } from "@testing-library/react";
 
 //home
 //Test for rendering home component
@@ -43,4 +45,26 @@ test("renders Explore component with groups", () => {
   const { getByText } = render(<Explore />);
 
   
+});
+
+
+//profile component 
+
+test("renders user name", () => {
+  // Render the component
+  render(<Profile />);
+  
+  // Assert that the user's name is rendered
+  expect(screen.getByText("Pandora")).toBeInTheDocument();
+});
+
+
+//userSignup
+test("renders display name input field", () => {
+  // Render the component
+  render(<UserSignup />);
+  
+  // Assert that the display name input field is rendered
+  const displayNameInput = screen.getByLabelText("Display Name:");
+  expect(displayNameInput).toBeInTheDocument();
 });
