@@ -134,6 +134,7 @@ app.post("/api/newuser", async (req, res) => {
 });
 
 // Update user route
+// Update user route
 app.put("/api/users/:sub", async (req, res) => {
   try {
     const sub = req.params.sub;
@@ -150,14 +151,13 @@ app.put("/api/users/:sub", async (req, res) => {
     console.log("Updating user data:", {
       displayName,
       pronouns,
-      dateOfBirth,
       picture,
       sub,
     });
 
     const result = await db.query(
-      "UPDATE user_table SET displayname = $1, pronouns = $2, date_of_birth = $3, picture = $4 WHERE auth0_sub = $5 RETURNING *",
-      [displayName, pronouns, dateOfBirth, picture, sub]
+      "UPDATE user_table SET displayname = $1, pronouns = $2,picture = $3 WHERE auth0_sub = $4 RETURNING *",
+      [displayName, pronouns,picture, sub]
     );
 
     console.log("User data updated successfully", result.rows[0]);
@@ -171,7 +171,6 @@ app.put("/api/users/:sub", async (req, res) => {
     res.status(500).json({ error: "Error updating user data" });
   }
 });
-
 /******************* Home Feature Routes  *********************/
 //Feed -> If user is a memeber select all post from that group
 app.get("/api/feed/:sub", async (req, res) => {

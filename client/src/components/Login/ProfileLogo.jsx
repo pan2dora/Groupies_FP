@@ -1,6 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Image } from "semantic-ui-react";
 
 const ProfileLogo = () => {
   const { user, isAuthenticated } = useAuth0();
@@ -87,7 +88,8 @@ const ProfileLogo = () => {
       {!user ? null : (
         <div>
           <a href="/profile">
-            <img
+            <Image
+             avatar
               className="rounded-full center"
               alt="user-image"
               src={user.picture}

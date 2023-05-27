@@ -8,7 +8,6 @@ const Profile = () => {
   const [formData, setFormData] = useState({
     displayName:  "",
     pronouns: "",
-    dateOfBirth: "",
     picture: "",
   });
 
@@ -87,15 +86,6 @@ const Profile = () => {
                     type="text"
                     name="pronouns"
                     value={formData.pronouns}
-                    onChange={handleFormChange}
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <label>Date of Birth</label>
-                  <input
-                    type="date"
-                    name="dateOfBirth"
-                    value={formData.dateOfBirth}
                     onChange={handleFormChange}
                   />
                 </Form.Field>
