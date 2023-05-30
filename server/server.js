@@ -232,10 +232,11 @@ app.post("/api/group", async (req, res) => {
   try {
     const newGroup = {
       group_name: req.body.group_name,
+      description: req.body.description,
     };
     const result = await db.query(
-      "INSERT INTO group_table (group_name) VALUES ($1) RETURNING *",
-      [newGroup.group_name]
+      "INSERT INTO group_table (group_name, description) VALUES ($1,$2) RETURNING *",
+      [newGroup.group_name, newGroup.description]
     );
     //intialized user id
     const userId = await getUserId(req.body.sub);
@@ -265,14 +266,30 @@ app.post("/api/group", async (req, res) => {
 
 app.get("/api/allpost", async (req, res) => {
   try {
-    const { rows: post } = await db.query(
-      "SELECT * FROM group_post ORDER BY group_post_id DESC "
-    );
-    res.json(post);
-  } catch (e) {
-    return res.status(400).json({ e });
+    const result = await db.query(`
+      SELECT
+        group_post.group_post_id,
+        group_post.image,
+        group_post.content,
+        group_post.user_id,
+        group_post.group_table_id,
+        user_table.displayname,
+        user_table.picture
+      FROM
+        group_post
+        JOIN user_table ON group_post.user_id = user_table.user_id
+      ORDER BY
+        group_post.group_post_id DESC
+    `);
+
+    const posts = result.rows;
+    res.json(posts);
+  } catch (error) {
+    return res.status(400).json({ error });
   }
 });
+
+
 
 //users data for group post
 

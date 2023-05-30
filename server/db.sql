@@ -91,7 +91,8 @@ ALTER TABLE public.group_post OWNER TO panpan;
 
 CREATE TABLE public.group_table (
     group_table_id integer NOT NULL,
-    group_name character varying(255)
+    group_name character varying(255),
+    description text
 );
 
 
@@ -235,83 +236,46 @@ ALTER TABLE ONLY public.group_table ALTER COLUMN group_table_id SET DEFAULT next
 -- Data for Name: comment; Type: TABLE DATA; Schema: public; Owner: panpan
 --
 
-INSERT INTO public.comment (comment_id, comment, comment_user_id, post_id, created_at) VALUES (1, 'Hey Bowser, maybe if you focused more on being a good guy instead of kidnapping people all the time, you wouldn''t have to worry about getting defeated by Mario all the time.', 3, 2, NULL);
-INSERT INTO public.comment (comment_id, comment, comment_user_id, post_id, created_at) VALUES (2, 'Sorry Bowser, but I gotta agree with Luigi on this one. You might have some cool gadgets and abilities, but you''ll never be as beloved as Mario.', 6, 2, NULL);
-INSERT INTO public.comment (comment_id, comment, comment_user_id, post_id, created_at) VALUES (3, 'Hey Bowser, as a fellow villain-turned-hero, I gotta say it''s never too late to change your ways. You could be crushing barrels instead of kidnapping princesses!', 5, 2, NULL);
-INSERT INTO public.comment (comment_id, comment, comment_user_id, post_id, created_at) VALUES (4, 'Ha, nice to see you posting on social media instead of being held captive in my castle! ', 4, 1, NULL);
-INSERT INTO public.comment (comment_id, comment, comment_user_id, post_id, created_at) VALUES (6, 'You''re always looking radiant, Peach! I''m so glad I get to save you every time Bowser tries to kidnap you. ', 1, 1, NULL);
-INSERT INTO public.comment (comment_id, comment, comment_user_id, post_id, created_at) VALUES (5, 'Yoshi like! Peach post always so pretty and nice! Maybe Yoshi come visit castle and bring some yummy fruit for everyone?', 7, 1, NULL);
 
 
 --
 -- Data for Name: group_membership; Type: TABLE DATA; Schema: public; Owner: panpan
 --
 
-INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (1, 1, NULL);
-INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (1, 8, true);
-INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (3, 8, true);
-INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (2, 8, true);
-INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (66, 8, true);
-INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (67, 8, true);
-INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (72, 11, true);
-INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (73, 11, true);
-INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (71, 11, NULL);
-INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (74, 11, true);
-INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (1, 11, NULL);
+INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (94, 11, NULL);
+INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (95, 11, true);
 
 
 --
 -- Data for Name: group_post; Type: TABLE DATA; Schema: public; Owner: panpan
 --
 
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (165, 'https://media1.giphy.com/media/tLQSYnrLCGcKY/200.gif?cid=d168aec02ihltpr5vi3so9d4z2yy9rm4m4sehmo7h928iwzv&ep=v1_gifs_search&rid=200.gif&ct=g', 'Hi my name is slim shady ', NULL, 71);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (166, 'https://media3.giphy.com/media/gzoOh4SkStpZQxZTzG/200.gif?cid=d168aec0iyfgc1udr1zp1jl5mxpvwgmgcb9qfiae54chrxw3&ep=v1_gifs_search&rid=200.gif&ct=g', 'Test', NULL, 1);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (167, 'https://media3.giphy.com/media/1BipZPeQvML3KX5Rw4/200.gif?cid=d168aec0iyfgc1udr1zp1jl5mxpvwgmgcb9qfiae54chrxw3&ep=v1_gifs_search&rid=200.gif&ct=g', 'test', NULL, 1);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (168, 'https://media2.giphy.com/media/3ohhwxmNcPvwyRqYKI/200.gif?cid=d168aec05lcc9t1je2rljypnn6pwkw13ciao9ps8596wleh5&ep=v1_gifs_search&rid=200.gif&ct=g', 'hyjhjhjhj', NULL, 1);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (169, 'https://media1.giphy.com/media/apYCS6KL5Z462QzKBZ/200.gif?cid=d168aec0omasjc3bradlvfs0tfkc9c0s7aq2tdvo3juv3aob&ep=v1_gifs_search&rid=200.gif&ct=g', 'h', NULL, 1);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (2, 'http://dummyimage.com/190x100.png/cc0000/ffffff', 'Another day, another thwarted attempt by Mario to defeat me with those silly power-ups. It''s like he doesn''t even know who he''s dealing with! 😂🔥🐢 #Bowser #KingKoopa #Unstoppable"', 4, 2);
-INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (1, 'http://dummyimage.com/190x100.png/cc0000/ffffff', 'Just got rescued by my favorite plumber/bodyguard again! Thanks for always being there, Mario! 🙌🏼👑💕 #SuperMarioBros #SavedAgain #PlumberBodyguard', 2, 71);
+INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (237, 'https://media2.giphy.com/media/gw3IWyGkC0rsazTi/200.gif?cid=d168aec0bliprrgsvk9hqegvjxelltm5ez9ok25oi68818q5&ep=v1_gifs_search&rid=200.gif&ct=g', 'Test', 11, 93);
+INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (238, 'https://media4.giphy.com/media/3ohc0ZRliclUMt98Va/200.gif?cid=d168aec0pxza7fgpd7hpcv5dka08gu94qsq3hu22b5okc0e0&ep=v1_gifs_search&rid=200.gif&ct=g', 'Test', 11, 94);
+INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (239, 'https://media4.giphy.com/media/hVTouq08miyVo1a21m/200.gif?cid=d168aec0uuwbn0gtahoubih6k27ldj3kd13e97m9cmovrdk6&ep=v1_gifs_search&rid=200.gif&ct=g', 'Test', 11, 94);
+INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (240, 'https://media0.giphy.com/media/l3fzM2wgd6TygHbYA/200.gif?cid=d168aec0bliprrgsvk9hqegvjxelltm5ez9ok25oi68818q5&ep=v1_gifs_search&rid=200.gif&ct=g', 'Test', 11, 94);
+INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (241, NULL, 'Test', 11, 94);
+INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (242, 'https://media2.giphy.com/media/l3V0H7bYv5Ml5TOfu/200.gif?cid=d168aec0bliprrgsvk9hqegvjxelltm5ez9ok25oi68818q5&ep=v1_gifs_search&rid=200.gif&ct=g', 'TEd', 11, 94);
 
 
 --
 -- Data for Name: group_table; Type: TABLE DATA; Schema: public; Owner: panpan
 --
 
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (1, 'Mushroom Kingdom');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (2, 'Koopaville');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (3, 'Test Group w/ thunderclient');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (30, 'Submission Test 1');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (31, 'Test');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (32, 'Testing Authorization');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (46, 'Testing new group');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (47, 'Testing new group');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (48, 'Test test test');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (49, 'Testing');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (50, 'Test');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (51, 'sub test');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (52, 'req test');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (53, 'test');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (54, 'test');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (55, 'Test');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (56, 'test');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (57, 'sub test');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (58, 'test with just user');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (59, 'testy');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (60, 'another');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (61, 'please be the last');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (62, 'tes');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (63, 'yay');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (64, 'Doop');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (65, 'Last test');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (66, 'tester');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (67, 'tes');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (68, 'Test');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (69, 'Testing again');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (70, 'Test');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (71, 'Anotha test');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (72, 'Test');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (73, 'Grouptestforadmin');
-INSERT INTO public.group_table (group_table_id, group_name) VALUES (74, 'lala land');
+INSERT INTO public.group_table (group_table_id, group_name, description) VALUES (1, 'Koopaville', '
+Welcome to Koopa Ville, the ultimate gathering place for all things fun and adventurous! Get ready to embark on a wild journey through a whimsical world filled with mischievous Koopas, exciting challenges, and unforgettable friendships.
+
+In Koopa Ville, every day is an adventure waiting to happen. Whether you''re soaring through the skies on flying Koopa shells, racing against your friends in thrilling Go-Kart competitions, or outsmarting Mario and his crew, there''s never a dull moment in our vibrant community.
+
+Join us as we explore mysterious castles, uncover hidden treasures, and conquer towering obstacles together. With our lively group of Koopas by your side, you''ll experience the thrill of daring escapades, epic quests, and plenty of laughs along the way.');
+INSERT INTO public.group_table (group_table_id, group_name, description) VALUES (2, 'Mushroom Kingdom', 'In Mushroom Kingdom, every day is a celebration of joy, friendship, and extraordinary quests. Join forces with the courageous Mario and his loyal companions as they venture through lush green landscapes, navigate treacherous obstacles, and confront dastardly villains.
+
+Embark on thrilling escapades that will take you deep into mystical forests, soaring over mushroom-capped hills, and diving into sparkling underwater worlds. Along the way, you''ll encounter lively characters like cheerful Toads, mischievous Yoshis, and even the mischievous but lovable Luigi.
+
+');
+INSERT INTO public.group_table (group_table_id, group_name, description) VALUES (93, 'test', 'test');
+INSERT INTO public.group_table (group_table_id, group_name, description) VALUES (94, 'Test', 'Test');
+INSERT INTO public.group_table (group_table_id, group_name, description) VALUES (95, 'Test', 'Test');
 
 
 --
@@ -319,13 +283,16 @@ INSERT INTO public.group_table (group_table_id, group_name) VALUES (74, 'lala la
 --
 
 INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (53, 'p', 'p', 'p', NULL, 'https://s.gravatar.com/avatar/5e586d3f8030175f5524a308356917cf?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fpa.png', 'pan2dora.brown+signuptest@gmail.com', 'p', 'auth0|646a7d5192e83c2d192f4312');
-INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (11, 'Pandora', 'John Doe', 'he/him', NULL, 'https://example.com/profile.jpg', 'pan2dora.brown@gmail.com', NULL, 'google-oauth2|110151895661426733698');
+INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (11, 'Pandora', 'Pandora', 'They/Them', '2023-05-05 00:00:00', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdZnsb9WJSRlXfRpnJ26aRDMxw8S0F1BPFM1i-kn14uA&s', 'pan2dora.brown@gmail.com', NULL, 'google-oauth2|110151895661426733698');
+INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (51, NULL, 'Sandy', 'she/her', '2023-05-26 00:00:00', 'https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F6%2F2015%2F07%2Fhello-kitty.jpg&q=60', 'pan2dora.brown+test20@gmail.com', NULL, 'auth0|646a7a1529c87bf8f14fb4cd');
 INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (50, NULL, 'John Doe', 'he/him', '1990-01-01 00:00:00', 'https://example.com/profile.jpg', 'pan2dora.brown+test9@gmail.com', NULL, 'auth0|646a79a9d70fc3a64b092810');
 INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (54, NULL, NULL, NULL, NULL, 'https://s.gravatar.com/avatar/ec1e7cc6f35206231770f980cf34b8b0?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fpa.png', 'pan2dora.brown+anothertest@gmail.com', NULL, 'auth0|646b7702d70fc3a64b094a0f');
 INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (55, NULL, NULL, NULL, NULL, 'https://s.gravatar.com/avatar/bbe4af030600d5ccacb081d60a32f395?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fpa.png', 'pan2dora.brown+test202@gmail.com', NULL, 'auth0|646ba630d2af3a84da91dc6f');
 INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (56, NULL, NULL, NULL, NULL, 'https://s.gravatar.com/avatar/e1bc32da6e7044205251778a53019634?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fpa.png', 'pan2dora.brown+rubytest@gmail.com', NULL, 'auth0|646bb032d2af3a84da91de84');
 INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (57, NULL, 'test', 'test', '2023-05-27 00:00:00', 'test', 'testing@gmail.com', NULL, 'auth0|646bb14bc5e194bb12b1d253');
 INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (58, NULL, 'vixenxloki', 'they/them', '2023-05-30 00:00:00', 'test', 'test@test.com', NULL, 'auth0|646be05e2b851c3fe65fa3a0');
+INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (59, NULL, 'vixenxloki', 'they/them', '2023-05-16 00:00:00', 'test', 'pan2dora.brown+test100@gmail.com', NULL, 'auth0|646f57584143421ed3474065');
+INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (60, NULL, NULL, NULL, NULL, 'https://s.gravatar.com/avatar/76386fa0a93962366aed304da1494c8e?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fpa.png', 'pan2dora.brown+test900@gmail.com', NULL, 'auth0|646fad1a2da97822aabcde85');
 INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (10, 'John', NULL, NULL, NULL, 'https://example.com/profile.jpg', 'test1@example.com', NULL, '10');
 INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (9, 'John', NULL, NULL, NULL, 'https://example.com/profile.jpg', 'test@example.com', NULL, '9');
 INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (8, 'Pandora', 'panda_panda', 'they/them', '1993-08-23 00:00:00', 'image will go here', 'blah@example.com', NULL, '8');
@@ -336,7 +303,6 @@ INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_
 INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (3, 'Luigi', 'luigixbrave', 'he/they', '1964-11-11 00:00:00', 'image will go here', 'luigi@example.com', NULL, '3');
 INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (2, 'Peach', 'peaches_peaches', 'she/her', '1965-08-01 00:00:00', 'image will go here', 'princesspeach@example.com', NULL, '2');
 INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (1, 'Mario', 'peach_lover', 'he/him', '1964-11-11 00:00:00', 'image will go here', 'mario@example.com', NULL, '1');
-INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (51, NULL, NULL, NULL, NULL, 'https://s.gravatar.com/avatar/e244f90a783d3a15d406660a1c23c4d2?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fpa.png', 'pan2dora.brown+test20@gmail.com', NULL, 'auth0|646a7a1529c87bf8f14fb4cd');
 INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (52, NULL, NULL, NULL, NULL, 'https://s.gravatar.com/avatar/a7fff5fffac30c429f5f768716e7a18e?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fpa.png', 'pan2dora.brown+test21@gmail.com', NULL, 'auth0|646a7bcfc3f3a8e08ad02b5c');
 INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (28, NULL, NULL, NULL, NULL, NULL, 'pan2dora.brown+test6@gmail.com', NULL, 'auth0|646a2edf29c87bf8f14faa09');
 
@@ -352,21 +318,21 @@ SELECT pg_catalog.setval('public.comments_comment_id_seq', 1, true);
 -- Name: group_table_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: panpan
 --
 
-SELECT pg_catalog.setval('public.group_table_group_id_seq', 74, true);
+SELECT pg_catalog.setval('public.group_table_group_id_seq', 95, true);
 
 
 --
 -- Name: post_post_id_seq; Type: SEQUENCE SET; Schema: public; Owner: panpan
 --
 
-SELECT pg_catalog.setval('public.post_post_id_seq', 169, true);
+SELECT pg_catalog.setval('public.post_post_id_seq', 242, true);
 
 
 --
 -- Name: user_table_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: panpan
 --
 
-SELECT pg_catalog.setval('public.user_table_user_id_seq', 58, true);
+SELECT pg_catalog.setval('public.user_table_user_id_seq', 60, true);
 
 
 --

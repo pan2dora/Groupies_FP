@@ -13,7 +13,7 @@ const LoginButton = () => {
 
     await loginWithRedirect({
       appState: {
-        returnTo: "/",
+        returnTo: "/home",
       },
       // prompt: "select_account",
     });

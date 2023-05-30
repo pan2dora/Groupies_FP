@@ -22,7 +22,7 @@ function MyNavBar(props) {
     <div className="shadow-md  fixed top-0 left-0 sticky">
       <div className="md:flex items-center justify-between bg-white  md:px-10 px-7 ">
         <div>
-          <a href="/">
+          <a href="/home">
             <img src={Logo} height="150" alt="Groupies Logo" />
           </a>
         </div>

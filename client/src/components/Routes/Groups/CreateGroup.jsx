@@ -6,6 +6,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 const CreateGroup = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [newGroup, setNewGroup] = useState('');
+  const [newGroupDescription, setNewGroupDescription] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isGroupCreated, setIsGroupCreated] = useState(false);
 
@@ -16,10 +17,16 @@ const CreateGroup = () => {
     setNewGroup(group_name);
   };
 
+  const handleNewGroupDescription = (event) => {
+    const description = event.target.value;
+    setNewGroupDescription(description);
+  };
+
   const addNewGroup = () => {
     const group = {
       group_name: newGroup,
-      sub: user.sub // Use the user's ID from Auth0 as the user_id
+      description: newGroupDescription,
+      sub: user.sub
     };
 
     fetch('/api/group', {
@@ -31,6 +38,7 @@ const CreateGroup = () => {
       .then((data) => {
         const createdGroup = data;
         setNewGroup(createdGroup.group_name);
+        setNewGroupDescription(createdGroup.description); // Update this line
         setIsSubmitted(true); // Set the submission status to true
         setIsGroupCreated(true); // Set the group creation status to true
       })
@@ -79,6 +87,15 @@ const CreateGroup = () => {
                     required
                     placeholder="Group Name"
                     onChange={handleNewGroup}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <label>Describe your group</label>
+                  <textarea
+                    value={newGroupDescription}
+                    required
+                    placeholder="Group Description"
+                    onChange={handleNewGroupDescription}
                   />
                 </Form.Field>
                 <Button type="submit">Submit</Button>
