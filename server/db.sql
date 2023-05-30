@@ -242,12 +242,14 @@ ALTER TABLE ONLY public.group_table ALTER COLUMN group_table_id SET DEFAULT next
 -- Data for Name: group_membership; Type: TABLE DATA; Schema: public; Owner: panpan
 --
 
+INSERT INTO public.group_membership (gtid, uid, is_admin) VALUES (96, 62, NULL);
 
 
 --
 -- Data for Name: group_post; Type: TABLE DATA; Schema: public; Owner: panpan
 --
 
+INSERT INTO public.group_post (group_post_id, image, content, user_id, group_table_id) VALUES (243, 'https://media2.giphy.com/media/gw3IWyGkC0rsazTi/200.gif?cid=d168aec0bliprrgsvk9hqegvjxelltm5ez9ok25oi68818q5&ep=v1_gifs_search&rid=200.gif&ct=g', 'Test', 62, 96);
 
 
 --
@@ -268,12 +270,15 @@ Embark on thrilling escapades that will take you deep into mystical forests, soa
 INSERT INTO public.group_table (group_table_id, group_name, description) VALUES (93, 'test', 'test');
 INSERT INTO public.group_table (group_table_id, group_name, description) VALUES (94, 'Test', 'Test');
 INSERT INTO public.group_table (group_table_id, group_name, description) VALUES (95, 'Test', 'Test');
+INSERT INTO public.group_table (group_table_id, group_name, description) VALUES (96, 'Test', 'Test');
 
 
 --
 -- Data for Name: user_table; Type: TABLE DATA; Schema: public; Owner: panpan
 --
 
+INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (61, NULL, NULL, NULL, NULL, 'https://s.gravatar.com/avatar/5495d3eeba1bf17c8766bab24d550037?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fmo.png', 'mockuser@mockuser.com', NULL, 'auth0|6475fb38b087f578dcc95e92');
+INSERT INTO public.user_table (user_id, given_name, displayname, pronouns, date_of_birth, picture, email, password, auth0_sub) VALUES (62, 'Pandora', 'Pan', 'they/them', NULL, 'https://hips.hearstapps.com/hmg-prod/images/cute-cat-photos-1593441022.jpg?crop=1.00xw:0.753xh;0,0.153xh&resize=1200:*', 'pan2dora.brown@gmail.com', NULL, 'google-oauth2|110151895661426733698');
 
 
 --
@@ -287,21 +292,21 @@ SELECT pg_catalog.setval('public.comments_comment_id_seq', 1, true);
 -- Name: group_table_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: panpan
 --
 
-SELECT pg_catalog.setval('public.group_table_group_id_seq', 95, true);
+SELECT pg_catalog.setval('public.group_table_group_id_seq', 96, true);
 
 
 --
 -- Name: post_post_id_seq; Type: SEQUENCE SET; Schema: public; Owner: panpan
 --
 
-SELECT pg_catalog.setval('public.post_post_id_seq', 242, true);
+SELECT pg_catalog.setval('public.post_post_id_seq', 243, true);
 
 
 --
 -- Name: user_table_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: panpan
 --
 
-SELECT pg_catalog.setval('public.user_table_user_id_seq', 60, true);
+SELECT pg_catalog.setval('public.user_table_user_id_seq', 62, true);
 
 
 --
