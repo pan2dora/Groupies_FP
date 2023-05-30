@@ -185,6 +185,7 @@ app.get("/api/feed/:sub", async (req, res) => {
         group_post.image,
         group_table.group_name,
         post_user.displayname,
+        post_user.pronouns,
         post_user.picture,
         post_user.auth0_sub
       FROM group_post
